@@ -1,0 +1,67 @@
+{
+  "reviewedAt": "2026-10-18",
+  "scope": "Five additional major corporate disclosures verified against SEC filings. This remains a selected dataset, not an exhaustive company census.",
+  "companies": [
+    {
+      "name": "Coinbase Global",
+      "country": "US",
+      "btc": 17864,
+      "eth": 160759,
+      "asOf": "2026-06-30",
+      "sourceId": "coinbase",
+      "url": "https://www.sec.gov/Archives/edgar/data/1679788/000167978826000088/coin-20260630.htm",
+      "locator": "Notes 7 and 9; units, not USD thousands",
+      "evidence": "Own investment assets 17,311 BTC + 150,279 ETH; own operating assets 553 BTC + 10,480 ETH. Sum: 17,864 BTC / 160,759 ETH. Borrowed assets, lending/derivatives collateral owed to counterparties and customer assets are separate categories and excluded.",
+      "verdict": "Add dated proprietary operating and investment assets only. US attribution follows principal executive offices in the filing."
+    },
+    {
+      "name": "Sharplink",
+      "country": "US",
+      "btc": null,
+      "eth": 634255,
+      "asOf": "2026-08-03",
+      "sourceId": "sharplink",
+      "url": "https://www.sec.gov/Archives/edgar/data/1981535/000149315226036620/form10-q.htm",
+      "locator": "MD&A, total ETH holdings and liquidity; subsequent disclosure at August 3",
+      "evidence": "634,255 native ETH. Exclude 181,748 ETH equivalent from LsETH and 72,935 ETH equivalent from weETH; do not use gross 888,938 ETH-equivalent figure for a native-token total.",
+      "verdict": "Add native ETH including native staking only. Miami headquarters. No newer native-unit breakdown located during review."
+    },
+    {
+      "name": "Hut 8 (consolidated)",
+      "country": "US",
+      "btc": 17316,
+      "eth": null,
+      "asOf": "2026-06-30",
+      "sourceId": "hut8",
+      "url": "https://www.sec.gov/Archives/edgar/data/1964789/000110465926090025/hut-20260630x10q.htm",
+      "locator": "Note 4 Bitcoin and Market Price Risk of Bitcoin",
+      "evidence": "17,316 BTC = 9,314 Hut 8 + 8,002 consolidated American Bitcoin. Includes 9,376 in custody, 3,090 pledged for miner purchase, 4,850 pledged as collateral. Own assets; not customer assets.",
+      "verdict": "Add consolidated balance once under Miami-based parent. Do not separately add American Bitcoin or mix subsidiary updates from another date."
+    },
+    {
+      "name": "Tesla",
+      "country": "US",
+      "btc": 11509,
+      "eth": null,
+      "asOf": "2026-06-30",
+      "sourceId": "tesla",
+      "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026049270/tsla-20260630.htm",
+      "locator": "Note 2 digital assets footnote (2)",
+      "evidence": "Explicitly discloses 11,509 units of Bitcoin at June 30, 2026 and December 31, 2025. No unit count is inferred from fair value.",
+      "verdict": "Add dated issuer-owned BTC. Q3 results are scheduled after the review date and not used."
+    },
+    {
+      "name": "Strive",
+      "country": "US",
+      "btc": 29462,
+      "eth": null,
+      "asOf": "2026-10-02",
+      "sourceId": "strive",
+      "url": "https://www.sec.gov/Archives/edgar/data/1920406/000162828026064753/asst-20261005.htm",
+      "locator": "Item 8.01, holdings at October 2",
+      "corroboratingUrl": "https://strive.com/treasury?tab=acquisitions",
+      "evidence": "29,462 BTC at October 2 versus 28,000 at September 30. Strategy preferred shares are financial investments and are not added as BTC. Consolidated group counted once.",
+      "verdict": "Add native BTC only. Dallas principal executive offices."
+    }
+  ]
+}

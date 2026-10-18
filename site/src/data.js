@@ -4,8 +4,8 @@ export const datasetMeta = {
   "reviewedAt": "2026-10-18",
   "updatedAt": "2026-10-18",
   "status": "Curated public-disclosure snapshot",
-  "coverage": "17 countries and territories · 20 selected companies",
-  "disclaimer": "A curated research preview, not a complete census of national wealth or a live audit of holdings. Disclosure dates vary by entity.",
+  "coverage": "17 countries and territories · 25 selected companies",
+  "disclaimer": "Indicative, dated public-disclosure and identified-wallet snapshots. Country totals cover only the listed entities and may be incomplete; they are not an audit of national wealth.",
   "methodology": [
     "Government figures include publicly reported state holdings and assets held in law-enforcement custody. Seized assets may be owed to victims and are not necessarily strategic reserves.",
     "Include businesses adds only the named companies in this dataset, attributed by operating headquarters. It does not mean every business in a country or government ownership of those assets.",
@@ -13,19 +13,20 @@ export const datasetMeta = {
     "A dash means no verified quantity is included. It does not mean the country or company owns none. Sums represent known, covered holdings only.",
     "Tracker estimates are explicitly identified. China’s disputed seizure balance, Bulgaria’s disputed 213,519 BTC and Ukraine officials’ personal declarations are excluded.",
     "Holdings are reviewed manually. Source publication and balance dates differ; open a country to inspect the date and evidence behind each figure.",
-    "Corporate holdings can include explicitly disclosed company-owned pledged, lent or staked assets, not just unencumbered wallets. Indirect liquidity-pool exposure is excluded from native token totals.",
-    "Corporate group holdings are counted once under the parent operating headquarters. Approximate issuer quantities and government tracker estimates carry an approximation mark."
+    "Corporate holdings can include explicitly disclosed company-owned pledged, lent or natively staked assets. Customer assets, borrowed tokens, liquidity-pool exposure and liquid-staking/restaking receipt-token equivalents are excluded.",
+    "Corporate group holdings are counted once under the parent operating headquarters. Values are indicative. Source notes describe rounded disclosures, wallet attribution and custody limitations."
   ]
 };
 
 export const sources = [
   {
     "id": "us-gov",
-    "title": "United States government · reported BTC holdings",
-    "publisher": "BitcoinTreasuries.net",
-    "url": "https://bitcointreasuries.net/governments/united-states",
-    "asOf": "2025-12-12",
-    "type": "Tracker estimate"
+    "title": "US government-attributed wallets · rounded 307K BTC",
+    "publisher": "Arkham Research",
+    "url": "https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026",
+    "asOf": "2026-10-15",
+    "type": "Identified-wallet estimate · rounded",
+    "retrievedAt": "2026-10-18"
   },
   {
     "id": "uk-gov",
@@ -33,15 +34,19 @@ export const sources = [
     "publisher": "Crown Prosecution Service",
     "url": "https://www.cps.gov.uk/node/29684",
     "asOf": "2026-10-18",
-    "type": "Official case study · accessed date"
+    "type": "Official case study · accessed date",
+    "dateKind": "accessed",
+    "retrievedAt": "2026-10-18",
+    "balanceDate": null
   },
   {
     "id": "sv-gov",
-    "title": "El Salvador · reported government BTC holdings",
-    "publisher": "BitcoinTreasuries.net",
-    "url": "https://bitcointreasuries.net/governments/el-salvador",
+    "title": "ONBTC official treasury wallet · confirmed BTC balance",
+    "publisher": "National Bitcoin Office · Government of El Salvador",
+    "url": "https://bitcoin.gob.sv/wallet/ONBTC",
     "asOf": "2026-10-18",
-    "type": "Public holdings tracker"
+    "type": "Official public wallet · observed snapshot",
+    "observedAt": "2026-10-18T04:18:00Z"
   },
   {
     "id": "sv-office",
@@ -53,19 +58,22 @@ export const sources = [
   },
   {
     "id": "bt-gov",
-    "title": "Bhutan · reported state-owned BTC holdings",
-    "publisher": "BitcoinTreasuries.net",
-    "url": "https://bitcointreasuries.net/governments/bhutan",
-    "asOf": "2026-09-15",
-    "type": "Tracker estimate"
+    "title": "Bhutan · 518 BTC in Arkham-attributed Druk wallets",
+    "publisher": "Arkham Research",
+    "url": "https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026",
+    "asOf": "2026-10-15",
+    "type": "Identified-wallet estimate · partial coverage",
+    "retrievedAt": "2026-10-18"
   },
   {
     "id": "tw-moj",
-    "title": "Seized virtual-asset inventory · Ministry of Justice response published by legislator Ju-Chun Ko",
-    "publisher": "Ju-Chun Ko · Ministry of Justice letter",
-    "url": "https://juchunko.com/en/act/bitcoin-reserve/",
+    "title": "Ministry of Justice letter · prosecutor seized-asset custody inventory",
+    "publisher": "Taiwan Ministry of Justice · published by legislator Ju-Chun Ko",
+    "url": "https://ipfs.juchunko.com/ipfs/bafkreib4hcvl3pbsdts44iwyzp2xzughb6mguj7r3ar45brrz3qzl2krsu",
     "asOf": "2025-10-31",
-    "type": "Legislative disclosure"
+    "type": "Official letter · original inventory visually verified",
+    "publishedAt": "2025-12-15",
+    "locator": "Page 3 inventory; scope limitations on page 1"
   },
   {
     "id": "tw-eth",
@@ -133,11 +141,12 @@ export const sources = [
   },
   {
     "id": "oranje",
-    "title": "OranjeBTC treasury dashboard · 3,950 BTC",
+    "title": "OranjeBTC market update · 3,950 BTC at 12 October 2026",
     "publisher": "OranjeBTC",
-    "url": "https://www.oranjebtc.com/dashboard",
-    "asOf": "2026-08-09",
-    "type": "Company treasury dashboard"
+    "url": "https://filemanager-cdn.mziq.com/published/1c906e2c-8d06-4a32-a1a8-a240167c77f2/12ff32f8-c4fe-4912-8a90-b2e451c590e8",
+    "asOf": "2026-10-12",
+    "type": "Issuer regulatory announcement",
+    "publishedAt": "2026-10-12"
   },
   {
     "id": "dunamu-2026h1",
@@ -185,11 +194,11 @@ export const sources = [
   },
   {
     "id": "h100",
-    "title": "H100 official Bitcoin Strategy Tracker · 3,506.4 BTC",
-    "publisher": "H100 Group",
-    "url": "https://treasury.h100.group/",
+    "title": "H100 completes acquisition · group holds 3,506.4 BTC",
+    "publisher": "H100 Group · MFN",
+    "url": "https://www.mfn.se/a/h100-group/h100-completes-acquisition-increasing-bitcoin-holdings-to-3-506-bitcoin.iframe",
     "asOf": "2026-08-10",
-    "type": "Company treasury dashboard"
+    "type": "Issuer acquisition-completion announcement"
   },
   {
     "id": "canaan",
@@ -204,7 +213,7 @@ export const sources = [
     "id": "treasury-nl",
     "title": "Treasury acquires additional 111 Bitcoin · total 1,111 BTC",
     "publisher": "Treasury B.V.",
-    "url": "https://treasury-btc.com/news/treasury-acquires-additional-111-bitcoin",
+    "url": "https://www.treasury-btc.com/news/treasury-acquires-additional-111-bitcoin",
     "asOf": "2025-09-18",
     "type": "Company disclosure"
   },
@@ -235,11 +244,12 @@ export const sources = [
   },
   {
     "id": "samara",
-    "title": "Bitcoin Bond first quarterly report · approximately 540 BTC",
+    "title": "Samara 2026 interim financial statements · units undisclosed",
     "publisher": "Samara Asset Group p.l.c.",
-    "url": "https://www.samara-ag.com/market-insights/samara-asset-group-issues-first-quarterly-report-for-its-bitcoin-bond",
-    "asOf": "2025-03-31",
-    "type": "Company disclosure · historical snapshot"
+    "url": "https://cdn.prod.website-files.com/687df2df76e1c946ba38115c/6aad502a3137f60313648897_Interim%202026%20FS%20-SIGNED.pdf",
+    "asOf": "2026-06-30",
+    "type": "Issuer financial statements",
+    "locator": "PDF page 12, printed page 11, note 9; period cover PDF page 2"
   },
   {
     "id": "cleanspark",
@@ -277,11 +287,75 @@ export const sources = [
   },
   {
     "id": "bt-context",
-    "title": "Bhutan IMF Article IV report · limits of wallet attribution",
+    "title": "Bhutan Article IV · authorities do not disclose aggregate crypto holdings",
     "publisher": "International Monetary Fund",
-    "url": "https://www.elibrary.imf.org/view/journals/002/2026/019/article-A001-en.xml",
-    "asOf": "2026-10-18",
-    "type": "Official policy context · accessed date, not a quantity disclosure"
+    "url": "https://www.imf.org/-/media/files/publications/cr/2026/english/1btnea2026001-source-pdf.pdf",
+    "asOf": "2025-12-22",
+    "type": "IMF report · wallet-attribution limitations",
+    "publishedAt": "2026-01-27",
+    "locator": "Annex I, paragraphs 2–3"
+  },
+  {
+    "id": "coinbase",
+    "title": "Coinbase Global · dated proprietary holdings",
+    "publisher": "Coinbase Global · SEC",
+    "url": "https://www.sec.gov/Archives/edgar/data/1679788/000167978826000088/coin-20260630.htm",
+    "asOf": "2026-06-30",
+    "type": "SEC company disclosure",
+    "locator": "Notes 7 and 9; units, not USD thousands"
+  },
+  {
+    "id": "sharplink",
+    "title": "Sharplink · dated proprietary holdings",
+    "publisher": "Sharplink · SEC",
+    "url": "https://www.sec.gov/Archives/edgar/data/1981535/000149315226036620/form10-q.htm",
+    "asOf": "2026-08-03",
+    "type": "SEC company disclosure",
+    "locator": "MD&A, total ETH holdings and liquidity; subsequent disclosure at August 3"
+  },
+  {
+    "id": "hut8",
+    "title": "Hut 8 (consolidated) · dated proprietary holdings",
+    "publisher": "Hut 8 (consolidated) · SEC",
+    "url": "https://www.sec.gov/Archives/edgar/data/1964789/000110465926090025/hut-20260630x10q.htm",
+    "asOf": "2026-06-30",
+    "type": "SEC company disclosure",
+    "locator": "Note 4 Bitcoin and Market Price Risk of Bitcoin"
+  },
+  {
+    "id": "tesla",
+    "title": "Tesla · dated proprietary holdings",
+    "publisher": "Tesla · SEC",
+    "url": "https://www.sec.gov/Archives/edgar/data/1318605/000162828026049270/tsla-20260630.htm",
+    "asOf": "2026-06-30",
+    "type": "SEC company disclosure",
+    "locator": "Note 2 digital assets footnote (2)"
+  },
+  {
+    "id": "strive",
+    "title": "Strive · dated proprietary holdings",
+    "publisher": "Strive · SEC",
+    "url": "https://www.sec.gov/Archives/edgar/data/1920406/000162828026064753/asst-20261005.htm",
+    "asOf": "2026-10-02",
+    "type": "SEC company disclosure",
+    "locator": "Item 8.01, holdings at October 2"
+  },
+  {
+    "id": "us-gov-historical",
+    "title": "United States · historical tracker comparison · 328,372 BTC",
+    "publisher": "BitcoinTreasuries.net",
+    "url": "https://bitcointreasuries.net/governments/united-states",
+    "asOf": "2025-12-12",
+    "type": "Historical tracker estimate"
+  },
+  {
+    "id": "samara-historical",
+    "title": "Samara Bitcoin Bond · historical 540 BTC report",
+    "publisher": "Samara Asset Group p.l.c.",
+    "url": "https://www.samara-ag.com/market-insights/samara-asset-group-issues-first-quarterly-report-for-its-bitcoin-bond",
+    "asOf": "2024-12-31",
+    "type": "Company disclosure · historical snapshot",
+    "publishedAt": "2025-03-31"
   }
 ];
 
@@ -296,7 +370,7 @@ export const countries = [
       39
     ],
     "government": {
-      "btc": 328372,
+      "btc": 307000,
       "eth": null
     },
     "businesses": [
@@ -306,7 +380,7 @@ export const countries = [
         "eth": null,
         "asOf": "2026-10-11",
         "sourceId": "strategy",
-        "note": "Company press page renders little text; SEC furnished release explicitly supplies aggregate holdings/date."
+        "note": "Aggregate company-owned BTC reported at 11 October 2026."
       },
       {
         "name": "Bitmine Immersion",
@@ -322,7 +396,7 @@ export const countries = [
         "eth": null,
         "asOf": "2026-06-30",
         "sourceId": "mara",
-        "note": "26,307 BTC unrestricted; 4,742 lent; 4,528 pledged; total 35,577. Includes company receivables. Excludes 44 investee BTC pending dividend. Flag encumbrance, retain gross total under current methodology."
+        "note": "26,307 unrestricted BTC plus 9,270 BTC receivables: 4,742 lent and 4,528 pledged. Total company-owned balance is 35,577 BTC. A pending 44 BTC investee dividend is excluded."
       },
       {
         "name": "CleanSpark",
@@ -347,10 +421,50 @@ export const countries = [
         "asOf": "2026-06-30",
         "sourceId": "btcs",
         "note": "51,226 directly held ETH from the June 2026 Form 10-Q, including staking and company-owned collateral. The separately disclosed 3,615 ETH underlying liquidity-pool positions is excluded to keep this total in directly held native units. Do not add the 54,841 ETH exposure subtotal again."
+      },
+      {
+        "name": "Coinbase Global",
+        "btc": 17864,
+        "eth": 160759,
+        "asOf": "2026-06-30",
+        "sourceId": "coinbase",
+        "note": "Own investment assets 17,311 BTC + 150,279 ETH; own operating assets 553 BTC + 10,480 ETH. Sum: 17,864 BTC / 160,759 ETH. Borrowed assets, lending/derivatives collateral owed to counterparties and customer assets are separate categories and excluded."
+      },
+      {
+        "name": "Sharplink",
+        "btc": null,
+        "eth": 634255,
+        "asOf": "2026-08-03",
+        "sourceId": "sharplink",
+        "note": "634,255 native ETH. Exclude 181,748 ETH equivalent from LsETH and 72,935 ETH equivalent from weETH; do not use gross 888,938 ETH-equivalent figure for a native-token total."
+      },
+      {
+        "name": "Hut 8 (consolidated)",
+        "btc": 17316,
+        "eth": null,
+        "asOf": "2026-06-30",
+        "sourceId": "hut8",
+        "note": "17,316 BTC = 9,314 Hut 8 + 8,002 consolidated American Bitcoin. Includes 9,376 in custody, 3,090 pledged for miner purchase, 4,850 pledged as collateral. Own assets; not customer assets."
+      },
+      {
+        "name": "Tesla",
+        "btc": 11509,
+        "eth": null,
+        "asOf": "2026-06-30",
+        "sourceId": "tesla",
+        "note": "Explicitly discloses 11,509 units of Bitcoin at June 30, 2026 and December 31, 2025. No unit count is inferred from fair value."
+      },
+      {
+        "name": "Strive",
+        "btc": 29462,
+        "eth": null,
+        "asOf": "2026-10-02",
+        "sourceId": "strive",
+        "note": "29,462 BTC at October 2 versus 28,000 at September 30. Strategy preferred shares are financial investments and are not added as BTC. Consolidated group counted once."
       }
     ],
-    "asOf": "2025-12-12",
-    "note": "Other trackers use198000; no reconciliation published in reviewed evidence. Maintain estimate label and true Dec2025 balance date. Executive order establishes final-forfeiture reserve with victim-return/legal exceptions but gives no quantity; cannot call entire tracker balance strategic reserve. Corporate totals include disclosed company-owned pledged/lent positions; amounts and exclusions appear in each company’s details.",
+    "asOf": "2026-10-15",
+    "note": "Arkham reports 307K BTC in identified US government wallets on 15 October 2026. This includes custody of seized assets and is not an audited Strategic Bitcoin Reserve balance. The older BitcoinTreasuries figure of 328,372 BTC is dated 12 December 2025 and is not added. Wallet movements do not by themselves establish sales. Corporate groups are counted once; company notes describe owned pledged, lent or staked positions.",
     "sourceIds": [
       "us-gov",
       "strategy",
@@ -359,9 +473,15 @@ export const countries = [
       "cleanspark",
       "riot",
       "btcs",
-      "us-context"
+      "us-context",
+      "coinbase",
+      "sharplink",
+      "hut8",
+      "tesla",
+      "strive",
+      "us-gov-historical"
     ],
-    "governmentType": "Reported custody · estimate",
+    "governmentType": "Tracked government custody",
     "estimatedAssets": [
       "btc"
     ]
@@ -388,13 +508,13 @@ export const countries = [
         "sourceId": "smarter-web"
       }
     ],
-    "asOf": "2026-10-18",
-    "note": "The CPS reports approximately 61,000 seized BTC subject to High Court civil recovery proceedings. This is law-enforcement custody, not a declared sovereign investment reserve. Date shown is the official case-study access date.",
+    "asOf": null,
+    "note": "The Crown Prosecution Service describes 61,000 seized BTC subject to High Court civil recovery proceedings. This is a rounded case-specific custody amount, not an unrestricted sovereign reserve. The undated case study was checked on 18 October 2026; it does not provide a balance date.",
     "sourceIds": [
       "uk-gov",
       "smarter-web"
     ],
-    "governmentType": "Seized assets · legal proceedings",
+    "governmentType": "Seized assets in custody",
     "estimatedAssets": [
       "btc"
     ]
@@ -409,20 +529,17 @@ export const countries = [
       13.7
     ],
     "government": {
-      "btc": 7807,
+      "btc": 7808.37428655,
       "eth": null
     },
     "businesses": [],
     "asOf": "2026-10-18",
-    "note": "Retain as tracker-reported balance rather than official verification. Official explorer https://bitcoin.gob.sv/ linked for comparison; access alone does not establish balance.",
+    "note": "The National Bitcoin Office explorer displayed a confirmed ONBTC wallet balance of 7,808.37428655 BTC when checked on 18 October 2026 at 04:18 UTC. This is an observed wallet snapshot, not a consolidated audit of every public-sector asset. Chivo customer assets are excluded.",
     "sourceIds": [
       "sv-gov",
       "sv-office"
     ],
-    "governmentType": "Reported national reserve",
-    "estimatedAssets": [
-      "btc"
-    ]
+    "governmentType": "Official treasury wallet"
   },
   {
     "id": "BT",
@@ -438,13 +555,13 @@ export const countries = [
       "eth": null
     },
     "businesses": [],
-    "asOf": "2026-09-15",
-    "note": "IMF Jan2026 report explicitly says authorities neither confirmed nor denied Arkham estimates; wallet declines may be unidentified transfers rather than disposals. State mining operations transferred from DHI to GIDC. Do not assert518 is full audited state wealth or infer all earlier coins sold.",
+    "asOf": "2026-10-15",
+    "note": "518 BTC is the rounded balance in wallets Arkham attributes to Druk Holding & Investments, not Bhutan’s disclosed total. The government has not published a complete coin inventory. Transfers to unidentified wallets can reduce a tracked balance without a sale. Older 10,000–13,000 BTC estimates refer to other dates and cannot establish today’s total. State-owned holdings are counted only here.",
     "sourceIds": [
       "bt-gov",
       "bt-context"
     ],
-    "governmentType": "State-owned holdings · estimate",
+    "governmentType": "Tracked state-linked wallets",
     "estimatedAssets": [
       "btc"
     ]
@@ -464,12 +581,16 @@ export const countries = [
     },
     "businesses": [],
     "asOf": "2025-10-31",
-    "note": "Historical Ministry of Justice inventory of seized assets in judicial custody, disclosed through a legislative inquiry. These are not central-bank reserves. ETH quantity is reported by DiarioBitcoin from the same inventory.",
+    "note": "Taiwan Ministry of Justice letter dated 15 December 2025 reports prosecutor seized-asset custody-platform balances at 31 October 2025. The original table lists 210.453033426 BTC and 2,429.96515210136 ETH; this dataset uses the rounded figures 210.45 and 2,429.97. The letter states that a total for finally confiscated assets is not available. These custody balances are not declared strategic reserves.",
     "sourceIds": [
       "tw-moj",
       "tw-eth"
     ],
-    "governmentType": "Judicial custody · historical disclosure"
+    "governmentType": "Judicial custody · dated inventory",
+    "estimatedAssets": [
+      "btc",
+      "eth"
+    ]
   },
   {
     "id": "JP",
@@ -491,7 +612,7 @@ export const countries = [
         "eth": null,
         "asOf": "2026-09-30",
         "sourceId": "metaplanet",
-        "note": "The 5 October company disclosure confirms 44,000 BTC at 30 September. The proposed 2,100 BTC Superplanet contribution was still conditional in the 15 October filing and is not added."
+        "note": "Group balance at 30 September 2026. The proposed 2,100 BTC contribution to Superplanet was conditional and is not added to these holdings."
       },
       {
         "name": "NEXON Co., Ltd.",
@@ -532,7 +653,8 @@ export const countries = [
         "btc": 737.33,
         "eth": null,
         "asOf": "2026-09-30",
-        "sourceId": "btct-corp"
+        "sourceId": "btct-corp",
+        "note": "Issuer-reported total includes principal Bitcoin loaned and excludes accrued unpaid interest. Loaned coins are company receivables, not immediately available custody balances."
       }
     ],
     "asOf": "2026-09-30",
@@ -589,12 +711,12 @@ export const countries = [
         "name": "OranjeBTC",
         "btc": 3950,
         "eth": null,
-        "asOf": "2026-08-09",
+        "asOf": "2026-10-12",
         "sourceId": "oranje"
       }
     ],
-    "asOf": "2026-08-09",
-    "note": "Business coverage includes OranjeBTC only. The date follows the latest acquisition displayed in its official treasury dashboard. No verified government quantity is included.",
+    "asOf": "2026-10-12",
+    "note": "OranjeBTC reported 3,950 BTC for the week ending 12 October 2026. No verified government quantity is included.",
     "sourceIds": [
       "oranje"
     ],
@@ -652,7 +774,7 @@ export const countries = [
         "eth": null,
         "asOf": "2026-08-10",
         "sourceId": "h100",
-        "note": "Consolidated holdings after Norwegian acquisitions, counted once in Sweden; latest dated transaction August 10. Website confirms Swedish identity. Current tracker value 1,051 on some aggregators is stale."
+        "note": "Consolidated group balance following the completed Norwegian acquisitions. Acquired subsidiaries are included once under the Swedish parent."
       }
     ],
     "asOf": "2026-08-10",
@@ -682,7 +804,7 @@ export const countries = [
         "eth": null,
         "asOf": "2026-09-30",
         "sourceId": "canaan",
-        "note": "Rounded company-owned balance includes BTC receivable and explicitly excludes customer deposits. Singapore address in official IR. ETH was fully monetized in August/September 2026: do not carry forward June's 3,951.70 ETH. Retain ETH null unless intentionally adding verified zero with separate balance date.",
+        "note": "Rounded company-owned BTC balance includes receivables and excludes customer deposits. No verified current ETH quantity is included.",
         "estimatedAssets": [
           "btc"
         ]
@@ -838,21 +960,19 @@ export const countries = [
     "businesses": [
       {
         "name": "Samara Asset Group",
-        "btc": 540,
+        "btc": null,
         "eth": null,
-        "asOf": "2025-03-31",
+        "asOf": "2026-06-30",
         "sourceId": "samara",
-        "note": "Company's own reserve assets, not portfolio funds' customer assets. Official disclosure gives Malta address. Historical snapshot; aggregators labeling same balance2026 do not establish new balance date.",
-        "estimatedAssets": [
-          "btc"
-        ],
-        "quantityLabel": "Historical snapshot"
+        "note": "The June 2026 financial statements report digital-asset values, purchases and disposals without a BTC/ETH unit count. The roughly 540 BTC disclosed for the earlier December 2024 report is historical and excluded. No quantity is inferred from euro valuation.",
+        "quantityLabel": "Current units unverified"
       }
     ],
-    "asOf": "2025-03-31",
-    "note": "Only named, verified company disclosures are included. No verified government quantity is included; this does not imply zero.",
+    "asOf": "2026-06-30",
+    "note": "Samara’s latest financial statements disclose digital-asset values and movements without native coin quantities. Historical Bitcoin holdings are excluded from current totals. This does not mean Samara or Malta holds zero.",
     "sourceIds": [
-      "samara"
+      "samara",
+      "samara-historical"
     ],
     "governmentType": "No verified government quantity included"
   }

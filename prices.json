@@ -1,12 +1,12 @@
 {
   "bitcoin": {
-    "usd": 81748
+    "usd": 81821
   },
   "ethereum": {
-    "usd": 2417.84
+    "usd": 2420.14
   },
-  "asOf": "2026-10-18T03:34:35.000Z",
+  "asOf": "2026-10-18T04:15:49.000Z",
   "source": "CoinGecko",
   "sourceUrl": "https://www.coingecko.com/",
-  "fetchedAt": "2026-10-18T03:34:52.496Z"
+  "fetchedAt": "2026-10-18T04:16:41.858Z"
 }

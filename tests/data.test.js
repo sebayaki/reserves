@@ -161,10 +161,13 @@ test('exchange customer custody and historical Nexon purchase do not enter holdi
   assert.equal(getHoldings(japan, true).btc, 44000);
 });
 
-test('government estimates and corporate approximation metadata remain explicit', () => {
-  for (const id of ['US', 'GB', 'SV', 'BT']) {
+test('wallet estimates and source rounding remain documented without conflating official balances', () => {
+  for (const id of ['US', 'GB', 'BT', 'TW']) {
     assert.ok(countries.find(country => country.id === id).estimatedAssets.includes('btc'));
   }
+  const salvador = countries.find(country => country.id === 'SV');
+  assert.equal(salvador.estimatedAssets, undefined);
+  assert.equal(sources.find(source => source.id === 'sv-gov').publisher, 'National Bitcoin Office · Government of El Salvador');
   const btcs = countries.find(country => country.id === 'US').businesses.find(business => business.sourceId === 'btcs');
   assert.equal(btcs.eth, 51226);
   for (const country of countries) {

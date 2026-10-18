@@ -1,0 +1,448 @@
+{
+  "reviewedAt": "2026-10-18",
+  "scope": "Government holdings recheck; all 17 existing country rows individually reviewed. No site files changed.",
+  "methodology": [
+    "Native BTC/ETH only. Ownership, law-enforcement custody, third-party wallet attribution and policy intentions are distinct.",
+    "A null is unknown/not verified; it is not zero. Absence from reserves reports cannot establish zero seized coins.",
+    "Source publication, balance date and retrieval date are separate. Rounded source values cannot acquire extra precision.",
+    "The audit does not independently validate address ownership or exhaustively enumerate every agency in every country."
+  ],
+  "sources": {
+    "arkham20261015": {
+      "url": "https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026",
+      "asOf": "2026-10-15",
+      "retrieved": "2026-10-18",
+      "type": "Primary analytics publisher, rounded identified-wallet balances",
+      "evidence": "Government table US307K, UK61K, SV7.3K, UAE Royal Group7.1K, Russia1K, Druk Holdings518. Prose UK61245. Not all government addresses verified."
+    },
+    "btTracker": {
+      "url": "https://bitcointreasuries.net/governments/bhutan",
+      "asOf": "2026-09-15",
+      "retrieved": "2026-10-18",
+      "evidence": "518 BTC explicitly dated Sep15; Oct16 chart dollar-valuation date must not replace balance date."
+    },
+    "btAttribution": {
+      "url": "https://info.arkm.com/announcements/bhutan-governments-750m-btc-now-on-arkham",
+      "asOf": "2024-09-16",
+      "retrieved": "2026-10-18",
+      "evidence": "Arkham first identified mining-related Druk addresses; correlated mining activity and construction satellite imagery. Entity link https://arkm.com/explorer/entity/druk-holding-investments ."
+    },
+    "btIMF": {
+      "url": "https://www.imf.org/-/media/files/publications/cr/2026/english/1btnea2026001-source-pdf.pdf",
+      "asOf": "2025-12-22",
+      "published": "2026-01-27",
+      "retrieved": "2026-10-18",
+      "evidence": "PDF p34 Annex I paras2-3: no authority-disclosed quantity; neither deny nor corroborate Arkham; lateSep decrease may be unidentified-wallet move. Estimated >10000mid2025 explicitly derives third-party sources. Not a current official quantity."
+    },
+    "usTracker": {
+      "url": "https://bitcointreasuries.net/governments/united-states",
+      "asOf": "2025-12-12",
+      "retrieved": "2026-10-18",
+      "evidence": "328372BTC; holdings date remains Dec12 even though dollar chart updates Oct18."
+    },
+    "usEO": {
+      "url": "https://www.whitehouse.gov/presidential-actions/2025/03/establishment-of-the-strategic-bitcoin-reserve-and-united-states-digital-asset-stockpile/",
+      "asOf": "2025-03-06",
+      "retrieved": "2026-10-18",
+      "evidence": "Reserve primarily finally-forfeited BTC with legal/victim obligations carveouts; no aggregate coin quantity disclosed."
+    },
+    "usDOJ": {
+      "url": "https://www.justice.gov/usao-edny/pr/chairman-prince-group-indicted-operating-cambodian-forced-labor-scam-compounds-engaged",
+      "asOf": "2025-10-14",
+      "retrieved": "2026-10-18",
+      "evidence": "127271BTC in US custody subject to civil forfeiture complaint, not proof of unrestricted sovereign ownership."
+    },
+    "usCourt": {
+      "url": "https://docs.justia.com/cases/federal/district-courts/new-york/nyedce/1%3A2025cv05745/537552/509",
+      "asOf": "2026-09-29",
+      "retrieved": "2026-10-18",
+      "evidence": "Court order in ongoing 127271BTC forfeiture matter; ownership claims still litigated."
+    },
+    "gbCPS": {
+      "url": "https://www.cps.gov.uk/node/29684",
+      "asOf": null,
+      "retrieved": "2026-10-18",
+      "evidence": "CPS states61000BTC recovered and currently subject to High Court civil recovery. Undated case study describes Nov2025convictions. Oct18 is retrieval, not balance date."
+    },
+    "svTracker": {
+      "url": "https://bitcointreasuries.net/governments/el-salvador",
+      "asOf": "2026-10-18",
+      "retrieved": "2026-10-18",
+      "evidence": "7807BTC; official office website linked but exact number not independently extracted from official explorer."
+    },
+    "svOffice": {
+      "url": "https://bitcoin.gob.sv/",
+      "asOf": null,
+      "retrieved": "2026-10-18",
+      "evidence": "Official JS explorer returned no readable holdings in web extraction. Must not claim directly verified7807from this page."
+    },
+    "svIMF": {
+      "url": "https://www.imf.org/en/news/articles/2026/10/01/pr26316-el-salvador-imf-concludes-2nd-and-3rd-reviews-under-the-eff",
+      "asOf": "2026-10-01",
+      "retrieved": "2026-10-18",
+      "evidence": "Documented donations explain accumulation. Majority Chivo control transferred to private operator, residual public exposure needs unwind. Does not publish aggregate BTC."
+    },
+    "twLegislator": {
+      "url": "https://juchunko.com/en/act/bitcoin-reserve/",
+      "asOf": "2025-10-31",
+      "published": "2025-12",
+      "retrieved": "2026-10-18",
+      "evidence": "Legislator publishes MOJ letter. All three scanned pages visually inspected in this audit. Exact quantity authority is the attached MOJ table, not the legislator webpage summary."
+    },
+    "twMOJLetter": {
+      "url": "https://ipfs.juchunko.com/ipfs/bafkreib4hcvl3pbsdts44iwyzp2xzughb6mguj7r3ar45brrz3qzl2krsu",
+      "asOf": "2025-10-31",
+      "retrieved": "2026-10-18",
+      "evidence": "Page1 MOJ letter dated ROC114-12-15 (2025-12-15), document 法檢字第11404544220號. Says actual finally-confiscated bitcoin quantities cannot be compiled under existing collection rules and Judicial Yuan database lacks the requested statistics. Instead attaches prosecutorial seized-virtual-assets custody-platform summary for Apr2024 through Oct2025. Page3 title 總結計算表（更新至1141031） = updated2025-10-31. BTC quantity210.453033426; ETH quantity2429.96515210136. Separate BTCB0.2928632 is wrapped asset and excluded.",
+      "published": "2025-12-15",
+      "verification": "Downloaded public PDF; rendered all three pages with pdftoppm; visually inspected page1 letter, page2 continuation and page3 table.",
+      "localPDF": "/tmp/taiwan-gov.pdf",
+      "renderedPages": [
+        "/tmp/taiwan-gov-1.png",
+        "/tmp/taiwan-gov-2.png",
+        "/tmp/taiwan-gov-3.png"
+      ]
+    },
+    "twSecondary": {
+      "url": "https://www.diariobitcoin.com/bitcoin/taiwan-revela-tenencias-de-210-bitcoins-provenientes-de-incautaciones-en-casos-criminales/",
+      "asOf": "2025-10-31",
+      "published": "2025-12-19",
+      "retrieved": "2026-10-18",
+      "evidence": "Reports210.45BTC and2429.97ETH in MOJ inventory as judicial custody."
+    },
+    "czCNB": {
+      "url": "https://www.cnb.cz/cs/ekonomicky-vyzkum/cnb-lab/digital-assets-pilot/",
+      "asOf": "2025-11-13",
+      "retrieved": "2026-10-18",
+      "evidence": "$1m total acquisition portfolio includesBTC,USD stablecoin and tokenizeddeposit. Excluded from FX reserves; no BTCunit quantity. Small test trades may change composition."
+    },
+    "deSaxony": {
+      "url": "https://www.justiz.sachsen.de/gensta/download/Medieninformation_16072024.pdf",
+      "asOf": "2024-07-16",
+      "retrieved": "2026-10-18",
+      "evidence": "Nearly50000BTC case liquidation complete. Cannot infer Germanywide zero from one disposed seizure."
+    }
+  },
+  "existingRows": [
+    {
+      "code": "BT",
+      "existingBTC": 518,
+      "existingETH": null,
+      "verdict": "Keep only with narrow identified-wallet scope; withdraw interpretation as countrywide audited total.",
+      "recommendedBTC": 518,
+      "recommendedETH": null,
+      "asOf": "2026-10-15",
+      "precision": "Rounded analytics figure",
+      "scope": "Arkham-attributed Druk Holding & Investments addresses",
+      "officialTotalBTC": null,
+      "sources": [
+        "arkham20261015",
+        "btTracker",
+        "btAttribution",
+        "btIMF"
+      ],
+      "corroboration": "Same518in two publications, but BitcoinTreasuries likely derives Arkham so not independent ownership verification.",
+      "disagreements": "Bitbo11286historicalJul2025 and old13000/10000estimates are different dates; do not regress to them. On-chain outflow is not proof of sale. CorpStacking article currently extracted Aug18review1749.96, while search cache hadSep7update518.388; inconsistent cached versions are unsuitable as authoritative latest exact decimals.",
+      "seedTsFinding": "No relevant publicly indexed exact SeedTs/multichain-new-sovereign-entity result found. Druk entity is the link Arkham itself publishes. No evidence obtained to assert SeedTs adds thousands of BTC or explains the gap.",
+      "note": "518 BTC is Arkham’s identified Druk-wallet balance, not Bhutan’s disclosed total. Unidentified wallets may exist; actual total is undisclosed."
+    },
+    {
+      "code": "US",
+      "existingBTC": 328372,
+      "existingETH": null,
+      "verdict": "Do not label328372current verified exact sovereign total. Prefer latest scoped rounded307000 analytics value or retain328372only as explicitly historicalDec12tracker snapshot.",
+      "recommendedBTC": 307000,
+      "recommendedETH": null,
+      "asOf": "2026-10-15",
+      "precision": "Source says307K; rounded",
+      "scope": "Arkham-attributed US government custody wallets, including seized assets",
+      "officialTotalBTC": null,
+      "sources": [
+        "arkham20261015",
+        "usTracker",
+        "usEO",
+        "usDOJ",
+        "usCourt"
+      ],
+      "disagreements": "328372dated2025-12-12 differs materially from307KOct15. Transfers may be custody changes or restitution; not proven sales. No independent exactcurrent national inventory found.",
+      "note": "Identified custody wallets; includes assets subject to forfeiture and victim claims. Not an audited Strategic Bitcoin Reserve balance."
+    },
+    {
+      "code": "GB",
+      "existingBTC": 61000,
+      "existingETH": null,
+      "verdict": "Retain61000as primary-supported case custody amount; fix date semantics.",
+      "recommendedBTC": 61000,
+      "recommendedETH": null,
+      "asOf": null,
+      "retrieved": "2026-10-18",
+      "precision": "Official case report rounded figure",
+      "scope": "Specific civil-recovery seizure",
+      "sources": [
+        "gbCPS",
+        "arkham20261015"
+      ],
+      "disagreements": "Arkham prose61245has wider wallet scope; do not replace official case61000without explaining additional245.",
+      "note": "61,000 BTC in civil recovery proceedings, not an unrestricted strategic reserve. Official case study retrieved18Oct2026; balance date not given."
+    },
+    {
+      "code": "SV",
+      "existingBTC": 7807,
+      "existingETH": null,
+      "verdict": "Replace old tracker number with the confirmed balance displayed in the official ONBTC wallet explorer.",
+      "recommendedBTC": 7808.37428655,
+      "recommendedETH": null,
+      "asOf": "2026-10-18",
+      "precision": "Official wallet UI, 8 BTC decimals",
+      "scope": "Reported government BTC holdings; exclude Chivo customer assets",
+      "sources": [
+        "svTracker",
+        "svOffice",
+        "svIMF",
+        "arkham20261015"
+      ],
+      "disagreements": "ArkhamOct15table7.3K differs fromtracker7807Oct18; cannot reconcile fromreadableofficialexplorer. Do not average.",
+      "note": "The National Bitcoin Office explorer displayed a confirmed ONBTC wallet balance of 7,808.37428655 BTC when checked on 18 October 2026 at 04:18 UTC. This is an observed wallet snapshot, not a consolidated audit of every public-sector asset. Chivo customer assets are excluded."
+    },
+    {
+      "code": "TW",
+      "existingBTC": 210.45,
+      "existingETH": 2429.97,
+      "verdict": "Retain existing two-decimal values; directly verified their rounding against the primary MOJ table.",
+      "recommendedBTC": 210.453033426,
+      "recommendedETH": 2429.96515210136,
+      "asOf": "2025-10-31",
+      "scope": "Prosecutorial seized-virtual-assets custody platform inventory, not a total of finally-forfeited state-owned assets",
+      "sources": [
+        "twMOJLetter",
+        "twLegislator",
+        "twSecondary"
+      ],
+      "note": "MOJ primary inventory updated31Oct2025, letter issued15Dec2025. BTC210.453033426 and ETH2429.96515210136 directly read from page3; display rounding210.45 and2429.97 is correct. Ministry explicitly cannot provide an aggregate finally-confiscated total. Coins are in prosecutorial custody pending final judgment, forfeiture or return to victims.",
+      "displayBTC": 210.45,
+      "displayETH": 2429.97,
+      "published": "2025-12-15",
+      "precisionNote": "BTC source prints9decimal places, exceeding nativeBTC8decimalgranularity; preserve as reported inventory aggregate or keep existing2decimaldisplay. Do not claim independently validated on-chain satoshi precision."
+    },
+    {
+      "code": "JP",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "No government unit disclosure verified; reserve statistics do not prove all-agency zero.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "CA",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "No current exact state custody/ownership total verified; private miners excluded.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "FR",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Seizures and auction history do not establish current aggregate; listed firms are private.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "BR",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Reserve legislative proposals and tax declarations are not government holdings.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "KR",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Case-specific seized assets cannot establish current national aggregate; no verified consolidated units.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "SE",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Centralbank reserve composition omitsBTC but does not cover all law-enforcement custody.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "SG",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Private mining-company headquarters does not imply state coinownership.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "NL",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Seizure/sale history is not current aggregate; no verifiedquantity.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "DE",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [
+        "deSaxony"
+      ],
+      "evidence": "HistoricalSaxonyseizure soldJuly2024; otheragencycurrent balancesunknown.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "IL",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Seizureannouncements may involve other tokens and orders rather than actual currentBTC/ETH custody.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "HK",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Private treasurycompanies and ETFclientcoins not government holdings.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    },
+    {
+      "code": "MT",
+      "existingBTC": null,
+      "existingETH": null,
+      "verdict": "Retain unknown, never replace with zero.",
+      "recommendedBTC": null,
+      "recommendedETH": null,
+      "asOf": null,
+      "sources": [],
+      "evidence": "Corporateheadquarters and cryptoindustry policy do not establish government holdings.",
+      "verificationLimit": "No new current exact primary government BTC/ETH quantity established in this audit; not an exhaustive all-agency inventory."
+    }
+  ],
+  "newCandidates": [
+    {
+      "code": "CZ",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "Add informative unknown row if geographic coverage desired.",
+      "sources": [
+        "czCNB"
+      ],
+      "reason": "Government centralbankBTCownership confirmed, unitquantity not disclosed. Do not convert mixed$1mportfolio toBTC."
+    },
+    {
+      "code": "UA",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "Exclude46351BTC.",
+      "source": "https://bitcointreasuries.net/governments/united-states",
+      "reason": "Tracker explicitly labels Ukraine holdings of public officials. Personal declarations not sovereign holdings. Donations historically received do not establish current balance."
+    },
+    {
+      "code": "AE",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "Do not add government quantity yet.",
+      "source": "https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026",
+      "reason": "Royal Group(CitadelMining)7.1Ktracker classification needs beneficial-owner/state ownership proof. Royalfamilyassociation is insufficient to assign government assets. BitcoinTreasuries6420differentdate/scope."
+    },
+    {
+      "code": "RU",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "No exact unit addition from rounded1K alone.",
+      "source": "https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026",
+      "reason": "Analytics article indicates1Kcustody but no exactdate/entity detailedverifiedinventory obtained."
+    },
+    {
+      "code": "FI",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "Do not revive90BTCascurrent without updatedCustomsconfirmation.",
+      "reason": "Common90BTCfigure traces2022remainingpendingcourt assets after1889.1sold; stalebalance."
+    },
+    {
+      "code": "CN",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "Exclude190000/194775current claim.",
+      "source": "https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026",
+      "reason": "HistoricalPlusTokenseizure, continuedownershipunknown."
+    },
+    {
+      "code": "BG",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "Exclude213519unresolved seizureclaim.",
+      "reason": "No primarycurrentbalance verified."
+    },
+    {
+      "code": "KZ",
+      "holdingsBTC": null,
+      "holdingsETH": null,
+      "verdict": "Do not add3544fromtracker alone.",
+      "source": "https://bitcointreasuries.net/governments/bhutan",
+      "reason": "Currenttracker lists3544but ownership/date/primaryquantity notverified."
+    }
+  ],
+  "officialExplorerFollowup": {
+    "url": "https://bitcoin.gob.sv/wallet/ONBTC",
+    "observedAt": "2026-10-18T04:18:00Z",
+    "btc": 7808.37428655,
+    "method": "Actual browser UI: confirmed balance, 20 addresses, 248 UTXOs",
+    "supersedes": "7,807 BTC tracker recommendation above",
+    "scope": "ONBTC official treasury wallet; not every public-sector entity"
+  }
+}

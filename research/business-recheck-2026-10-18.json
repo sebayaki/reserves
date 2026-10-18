@@ -1,0 +1,458 @@
+{
+  "reviewedAt": "2026-10-18",
+  "scope": "Recheck original 20 selected company rows; additions independently reviewed by root. Native company-owned BTC/ETH, including owned pledged/lent/staked; customer, borrowed and indirect LP excluded.",
+  "findings": [
+    {
+      "sourceId": "strategy",
+      "name": "Strategy",
+      "countryId": "US",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 848250,
+        "eth": null,
+        "asOf": "2026-10-11"
+      },
+      "new": {
+        "btc": 848250,
+        "eth": null,
+        "asOf": "2026-10-11"
+      },
+      "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312526419726/mstr-ex99_1.htm",
+      "evidence": "SEC furnished October 12 release explicitly reports 848,250 BTC at October 11. Retain group quantity once.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "bitmine",
+      "name": "Bitmine Immersion",
+      "countryId": "US",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 214,
+        "eth": 6028946,
+        "asOf": "2026-10-11"
+      },
+      "new": {
+        "btc": 214,
+        "eth": 6028946,
+        "asOf": "2026-10-11"
+      },
+      "url": "https://www.sec.gov/Archives/edgar/data/1829311/000149315226046744/ex99-1.htm",
+      "evidence": "SEC furnished release explicitly reports 6,028,946 ETH and 214 BTC at October 11 13:30 ET. The 5,067,309 staked ETH is a subset, not additive. US Norwalk headquarters corroborated by current issuer IR.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "mara",
+      "name": "MARA Holdings",
+      "countryId": "US",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 35577,
+        "eth": null,
+        "asOf": "2026-06-30"
+      },
+      "new": {
+        "btc": 35577,
+        "eth": null,
+        "asOf": "2026-06-30"
+      },
+      "url": "https://ir.mara.com/sec-filings/all-sec-filings/content/0001507605-26-000022/mara-20260630.htm",
+      "evidence": "June 30 10-Q: 26,307 unrestricted BTC plus 9,270 BTC receivables = 35,577. Receivables comprise 4,742 lent and 4,528 pledged. Exclude 44 BTC investee dividend pending receipt. Include owned lent/pledged under stated method; not all liquid. No later quantified primary found in targeted search.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "cleanspark",
+      "name": "CleanSpark",
+      "countryId": "US",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 13530,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "new": {
+        "btc": 13530,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "url": "https://investors.cleanspark.com/news/news-details/2026/CleanSpark-Releases-September-2026-Operational-Update/default.aspx",
+      "evidence": "October 9 release: September 30 13,530 BTC, including 3,475 collateral or receivable under derivatives. Prior 13,703 +529 mined -2 spot sales -700 call settlements reconciles. Owned gross quantity; preserve derivative qualification.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "riot",
+      "name": "Riot Platforms",
+      "countryId": "US",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 11380,
+        "eth": null,
+        "asOf": "2026-06-30"
+      },
+      "new": {
+        "btc": 11380,
+        "eth": null,
+        "asOf": "2026-06-30"
+      },
+      "url": "https://www.riotplatforms.com/riot-platforms-reports-second-quarter-2026-financial-results-and-strategic-highlights/",
+      "evidence": "August 10 second-quarter release explicitly 11,380 BTC June 30, including 5,821 pledged collateral. No newer quantified primary found; some trackers have materially conflicting/stale figures.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "btcs",
+      "name": "BTCS",
+      "countryId": "US",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": null,
+        "eth": 51226,
+        "asOf": "2026-06-30"
+      },
+      "new": {
+        "btc": null,
+        "eth": 51226,
+        "asOf": "2026-06-30"
+      },
+      "url": "https://www.sec.gov/Archives/edgar/data/1436229/000149315226039249/form10-q.htm",
+      "evidence": "June 30 10-Q distinguishes 51,226 directly held ETH from 3,615 ETH underlying liquidity-pool positions. Exclude LP portion; do not use total exposure 54,841. Native staking and company collateral remain included.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "smarter-web",
+      "name": "The Smarter Web Company",
+      "countryId": "GB",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 2830,
+        "eth": null,
+        "asOf": "2026-10-15"
+      },
+      "new": {
+        "btc": 2830,
+        "eth": null,
+        "asOf": "2026-10-15"
+      },
+      "url": "https://www.smarterwebcompany.co.uk/smarterweb-co-uk/_img/pdf/news/2026-10-15-Bitcoin-Purchase.pdf",
+      "evidence": "October 15 issuer regulatory PDF explicitly 83 BTC purchased, total 2,830. Some existing BTC secures Coinbase credit facility. Company-owned collateral is included.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "metaplanet",
+      "name": "Metaplanet",
+      "countryId": "JP",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 44000,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "new": {
+        "btc": 44000,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "url": "https://contents.xj-storage.jp/xcontents/33500/4b5f0c2e/ab52/4d40/9d89/e2aa6e3f3524/140120261005546274.pdf",
+      "evidence": "Fresh original PDF dated October 5 explicitly group 44,000 BTC at September 30; Q3 sold 10,000 and acquired 11,000. Count group once under Japan. Proposed 2,100 BTC Superplanet contribution cannot be added before completion.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "nexon-2026h1",
+      "name": "NEXON Co., Ltd.",
+      "countryId": "JP",
+      "verdict": "null_correct_latest_units_not_disclosed",
+      "old": {
+        "btc": null,
+        "eth": null,
+        "asOf": "2026-06-30"
+      },
+      "new": {
+        "btc": null,
+        "eth": null,
+        "asOf": "2026-06-30"
+      },
+      "url": "https://disclosure2dl.edinet-fsa.go.jp/searchdocument/pdf/S100YWN3.pdf",
+      "evidence": "Fresh EDINET S100YWN3 cover establishes 2026 first half, filed August 14. Page 32 note 7(4) reports Bitcoin investment carrying value 16,355 million yen but no coin count. April 2021 purchase 1,717 BTC is historical only. Retain null, do not convert value into units. Tokyo issuer assigned Japan, not Korea.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "btct-corp",
+      "name": "Bitcoin Treasury Corporation",
+      "countryId": "CA",
+      "verdict": "primary_dashboard_quantity_verified_add_lending_note",
+      "old": {
+        "btc": 737.33,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "new": {
+        "btc": 737.33,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "url": "https://btctcorp.com/",
+      "evidence": "Issuer dashboard explicitly 737.33 BTC as of September 30. Footnote includes principal Bitcoin loaned and excludes accrued unpaid interest. Add that qualifier; dashboard is issuer-reported indicative/unaudited. Toronto operating address supports Canada.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "capital-b",
+      "name": "Capital B",
+      "countryId": "FR",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 3538,
+        "eth": null,
+        "asOf": "2026-09-28"
+      },
+      "new": {
+        "btc": 3538,
+        "eth": null,
+        "asOf": "2026-09-28"
+      },
+      "url": "https://cptlb.com/wp-content/uploads/2026/09/rbZj2RjXHd/20260928-Capital-B-CP-28-septembre-2026-EN-FINAL.pdf",
+      "evidence": "Fresh September 28 issuer PDF states 13 BTC acquisition and total group holdings 3,538. Group subsidiaries counted once at French parent headquarters, not separately in Luxembourg.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "oranje",
+      "name": "OranjeBTC",
+      "countryId": "BR",
+      "verdict": "update_balance_date_and_primary_source",
+      "old": {
+        "btc": 3950,
+        "eth": null,
+        "asOf": "2026-08-09"
+      },
+      "new": {
+        "btc": 3950,
+        "eth": null,
+        "asOf": "2026-10-12"
+      },
+      "url": "https://filemanager-cdn.mziq.com/published/1c906e2c-8d06-4a32-a1a8-a240167c77f2/12ff32f8-c4fe-4912-8a90-b2e451c590e8",
+      "evidence": "Newer official October 12 market communication covers October 5-12 and reports total reserve 3,950 BTC. Existing August 9 date is stale even though quantity unchanged. PDF obtained via official issuer LinkedIn shortlink; signed Sao Paulo October 12.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "dunamu-2026h1",
+      "name": "Dunamu · Upbit (consolidated)",
+      "countryId": "KR",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 16587,
+        "eth": 12329,
+        "asOf": "2026-06-30"
+      },
+      "new": {
+        "btc": 16587,
+        "eth": 12329,
+        "asOf": "2026-06-30"
+      },
+      "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260814003803&dcmNo=11538594&eleId=24&offset=452986&length=276461&dtd=dart4.xsd",
+      "evidence": "Fresh DART consolidated Note 13(2): own BTC 16,643+68-124=16,587; own ETH 11,278+7,531-6,480=12,329. Note 13(3) customer 173,911 BTC/2,338,007 ETH expressly not company assets and excluded. Parent-only 14,505/12,327 is nested, not additional. Filing is August 14 2026, balance June 30 2026. Seoul parent group once.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "h100",
+      "name": "H100 Group",
+      "countryId": "SE",
+      "verdict": "replace_tracker_with_primary_release_quantity_verified",
+      "old": {
+        "btc": 3506.4,
+        "eth": null,
+        "asOf": "2026-08-10"
+      },
+      "new": {
+        "btc": 3506.4,
+        "eth": null,
+        "asOf": "2026-08-10"
+      },
+      "url": "https://www.mfn.se/a/h100-group/h100-completes-acquisition-increasing-bitcoin-holdings-to-3-506-bitcoin.iframe",
+      "evidence": "Dashboard disclaimer says independently compiled by StrategyTracker and not official reporting verified by H100. Replace with issuer August 10 acquisition-completion release on MFN: 2,455.37 BTC acquired, total group 3,506.4. Norwegian subsidiary balances counted once under Swedish parent.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "canaan",
+      "name": "Canaan",
+      "countryId": "SG",
+      "verdict": "primary_rounded_quantity_verified",
+      "old": {
+        "btc": 1875,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "new": {
+        "btc": 1875,
+        "eth": null,
+        "asOf": "2026-09-30"
+      },
+      "url": "https://canaan.gcs-web.com/news-releases/news-release-details/canaan-inc-provides-september-2026-bitcoin-production-and-mining",
+      "evidence": "October 15 operational release reports rounded September 30 company balance 1,875 BTC. Footnote includes BTC receivables, excludes customer deposits; JV quantities separate. ETH liquidation narrative is not a verified dated ETH balance, so retain null. Singapore headquarters; Cayman incorporation does not govern HQ attribution.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists.",
+      "approximate": true
+    },
+    {
+      "sourceId": "treasury-nl",
+      "name": "Treasury B.V.",
+      "countryId": "NL",
+      "verdict": "historical_quantity_verified",
+      "old": {
+        "btc": 1111,
+        "eth": null,
+        "asOf": "2025-09-18"
+      },
+      "new": {
+        "btc": 1111,
+        "eth": null,
+        "asOf": "2025-09-18"
+      },
+      "url": "https://www.treasury-btc.com/news/treasury-acquires-additional-111-bitcoin",
+      "evidence": "September 18 2025 issuer release states 1,111 BTC. Current homepage still shows 1,111 but does not establish new balance date; newsroom contains no newer dated holdings release. Retain stale/historical flag, not a 2026 balance claim. Netherlands Amsterdam issuer.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists.",
+      "stale": true
+    },
+    {
+      "sourceId": "3u",
+      "name": "3U Holding",
+      "countryId": "DE",
+      "verdict": "primary_quantity_verified",
+      "old": {
+        "btc": 427.1,
+        "eth": null,
+        "asOf": "2026-10-01"
+      },
+      "new": {
+        "btc": 427.1,
+        "eth": null,
+        "asOf": "2026-10-01"
+      },
+      "url": "https://www.3u.net/en/3u-group/bitcoin-investment/",
+      "evidence": "Issuer October 2026 factsheet explicitly 427.1 BTC as of October 1. Live BTC price date October 14 is not holdings date. German company-owned treasury.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists."
+    },
+    {
+      "sourceId": "zooz",
+      "name": "ZOOZ Strategy",
+      "countryId": "IL",
+      "verdict": "primary_approximate_quantity_verified",
+      "old": {
+        "btc": 1047,
+        "eth": null,
+        "asOf": "2026-08-23"
+      },
+      "new": {
+        "btc": 1047,
+        "eth": null,
+        "asOf": "2026-08-23"
+      },
+      "url": "https://ir.zoozpower.com/wp-content/uploads/2026/08/ZOOZ-Power-Reports-Financial-Results-for-the-Six-Months-Ended-June-30-2025.pdf",
+      "evidence": "Fresh PDF actual cover is August 2026 Form 6-K despite erroneous filename June-30-2025. Subsequent-events note explicitly approximately 1,047 BTC as of August 23 2026. Use approximate label. Principal executive office Lod Israel supports headquarters attribution.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists.",
+      "approximate": true
+    },
+    {
+      "sourceId": "boyaa",
+      "name": "Boyaa Interactive",
+      "countryId": "HK",
+      "verdict": "primary_approximate_quantity_verified",
+      "old": {
+        "btc": 4468,
+        "eth": null,
+        "asOf": "2026-09-21"
+      },
+      "new": {
+        "btc": 4468,
+        "eth": null,
+        "asOf": "2026-09-21"
+      },
+      "url": "https://www.boyaa.com.hk/attachment/2026092101389.pdf",
+      "evidence": "Fresh September 21 issuer PDF states approximately 4,468 BTC; company own cash/proceeds and institutional custody, expressly no third-party exchange/brokerage/asset-management service. Official IR identifies Hong Kong headquarters, Shenzhen office, Cayman incorporation. Attribute HQ Hong Kong once.",
+      "reason": "Fresh primary-source reading; quantity is a dated issuer disclosure, not independent custody audit.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists.",
+      "approximate": true
+    },
+    {
+      "sourceId": "samara",
+      "name": "Samara Asset Group",
+      "countryId": "MT",
+      "verdict": "withdraw_historical_quantity_latest_units_unverified",
+      "old": {
+        "btc": 540,
+        "eth": null,
+        "asOf": "2025-03-31"
+      },
+      "new": {
+        "btc": null,
+        "eth": null,
+        "asOf": "2026-06-30"
+      },
+      "url": "https://cdn.prod.website-files.com/687df2df76e1c946ba38115c/6aad502a3137f60313648897_Interim%202026%20FS%20-SIGNED.pdf",
+      "evidence": "Downloaded latest issuer 2026 interim financial statements and visually read scanned original. PDF page 2 confirms period ended June 30 2026. PDF page 12 (printed 11), note 9 intangible assets, reports digital assets EUR19,128,388, including additions EUR1,493,127 and disposals EUR1,380,501, but no BTC/ETH unit count. Historical approximately 540 BTC belonged to report estimated December 31 2024, published March 31 2025. Latest disclosed movements prevent treating that old quantity as a current verified balance. No value-to-unit conversion.",
+      "reason": "Use null for current/latest balance, like Nexon; preserve historical approximately540 only in note. This is unverified units, not a finding of zero holdings.",
+      "countryAssignment": "Retain operating-headquarters country; consolidated group counted once.",
+      "latestSearchLimit": "Targeted issuer/filing review as of 2026-10-18; absence of newer indexed disclosure is not proof that none exists.",
+      "approximate": true,
+      "historical": {
+        "btc": 540,
+        "approximate": true,
+        "asOf": "2024-12-31",
+        "publishedAt": "2025-03-31",
+        "url": "https://www.samara-ag.com/market-insights/samara-asset-group-issues-first-quarterly-report-for-its-bitcoin-bond"
+      },
+      "locator": "PDF page 12, printed page 11, note 9; period cover PDF page 2"
+    }
+  ],
+  "summary": {
+    "originalRows": 20,
+    "custodyAuditPerformed": false,
+    "disclosureQuantityChangeFound": true,
+    "dateCorrections": [
+      "oranje"
+    ],
+    "sourceCorrection": [
+      "h100"
+    ],
+    "ownershipNoteCorrection": [
+      "btct-corp"
+    ],
+    "quantityWithdrawals": [
+      "samara"
+    ],
+    "limitation": "Verified published quantities and scope, not independent custody or completeness. Samara latest exact units unavailable; old quantity withdrawn."
+  },
+  "crossChecks": "Secondary tracker comparisons used only to locate discrepancies; stale MARA/Riot/H100 tracker values were not substituted for issuer quantities."
+}
