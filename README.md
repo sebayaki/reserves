@@ -41,6 +41,14 @@ The build produces `dist/` and stages its generated `index.html`, `assets/`, `CN
 
 GitHub Actions runs validation on pushes and pull requests. GitHub Pages publishes the committed root directly. No server, private API key or external font request is required at runtime.
 
+## Search and social sharing
+
+The canonical page is `https://reserves.sebayaki.com/`. Open Graph and X large-image cards use the same title, description and 1200×630 `public/og-image.png`, attributed to `@0xsebayaki`. The artwork avoids changing balances and prices; its equal-size map dots indicate selected locations, not quantities. Its editable capture surface is `site/og-preview.html`: open `/og-preview.html` in the dev server at 1200×630, wait for fonts and `data-og-ready="true"`, then export a genuine PNG to `public/og-image.png`.
+
+The Vite SEO plugin renders the default table, totals, methodology scope and source register directly into HTML using the same presentation code as the interactive site. Without JavaScript, the page includes scope notes and accessible methodology/source details. Each build also emits `data.json` containing the disclosed quantities, dates, entity notes, sources and separate price snapshot. WebSite, WebPage and Dataset JSON-LD describe that actual content and download; the source register is ordered newest first and displays dates ahead of titles.
+
+`robots.txt` permits the public experience and data while excluding development/source directories; `sitemap.xml` lists the single canonical page. Filter URLs share the root canonical and social card. These measures support crawling and interpretation rather than guaranteeing rankings or AI citations; see [Google's AI search guidance](https://developers.google.com/search/docs/appearance/ai-features) and the [Open Graph specification](https://ogp.me/). Social services may cache earlier previews until they fetch the page again.
+
 ## Data boundaries
 
 This disclosure review covers **17 countries and territories and 25 selected companies**, not a comprehensive world ranking or custody audit. Government and corporate balance dates differ. Unverified current unit counts are excluded from totals; historical purchases do not establish a current balance. Disclosure dates are visible in each country report. Some government figures are identified-wallet estimates with incomplete coverage; seized assets can be held in custody and are not necessarily owned as strategic reserves. Companies are assigned by operating headquarters; state-owned Bhutan assets are counted once. ETFs, exchange customer balances and private citizens are excluded.

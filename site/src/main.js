@@ -7,18 +7,13 @@ import { feature, mesh } from 'topojson-client';
 import world from 'world-atlas/countries-110m.json';
 import { countries, sources, datasetMeta } from './data.js';
 import { rankCountries } from './model.js';
-import { INITIAL_VIEWPORT, zoomViewport, panViewport, assetUsd } from './map-viewport.js';
+import { safe, number, compact, money, date, tableRowsMarkup, sourceRegisterMarkup, scopeSummary } from './presentation.js';
+import { INITIAL_VIEWPORT, zoomViewport, panViewport } from './map-viewport.js';
 import { parsePreferences, serializePreferences } from './state.js';
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
-const safe = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-const number = value => value === null ? '—' : new Intl.NumberFormat('en-US', {maximumFractionDigits:2}).format(value);
-const compact = value => value === null ? '—' : new Intl.NumberFormat('en-US', {notation:'compact',maximumFractionDigits:2}).format(value);
-const money = value => value === null ? '—' : '$' + compact(value);
-const share = value => value > 0 && value < 0.001 ? '&lt;0.1%' : `${(value * 100).toFixed(1)}%`;
 const estimated = (row, asset = state.asset) => [...(row.estimatedAssets || []), ...(state.businesses ? row.businesses.flatMap(b => b.estimatedAssets || []) : [])].some(key => asset === 'all' || key === asset);
-const date = value => new Intl.DateTimeFormat('en-GB', {day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(value));
 const sourceById = new Map(sources.map(source => [source.id, source]));
 const state = {
   ...parsePreferences(location.search),
@@ -202,13 +197,9 @@ function renderMap(rows) {
     group.setAttribute('aria-label',`${row.name}: ${row.value === null ? 'No verified amount in this view' : money(row.value)}. View sources and holdings.`);
   });
 }
-function assetValueLine(quantity,price) {
-  const value=assetUsd(quantity,price);
-  return value===null?'':`<small class="table-asset-usd" aria-label="${safe(money(value))} USD">${money(value)}</small>`;
-}
 function renderTable(rows) {
   const filtered = rows.filter(row => row.name.toLowerCase().includes(state.query.toLowerCase()) || row.id.toLowerCase() === state.query.toLowerCase());
-  $('#holdings-body').innerHTML = filtered.map(row => `<tr tabindex="0" role="row" data-country="${row.id}" class="${row.rank===1?'rank-first':''}" aria-label="${safe(row.name)}, ${row.rank ? `rank ${row.rank}` : 'no verified amount'}, view details"><td class="rank-cell">${row.rank ? String(row.rank).padStart(2,'0') : '—'}</td><td><div class="country-cell-content"><span class="flag" aria-hidden="true">${row.flag}</span><span class="country-name">${safe(row.name)}</span></div></td><td class="number-column"><span class="asset-number ${row.holdings.btc===null?'missing-value':''}">${number(row.holdings.btc)}</span>${assetValueLine(row.holdings.btc,prices.bitcoin.usd)}</td><td class="number-column"><span class="asset-number ${row.holdings.eth===null?'missing-value':''}">${number(row.holdings.eth)}</span>${assetValueLine(row.holdings.eth,prices.ethereum.usd)}</td><td class="number-column"><span class="value-number ${row.value===null?'missing-value':''}">${money(row.value)}</span></td><td class="share-cell">${row.share===null?'<span class="missing-value">—</span>':`<span class="share-cell-value">${share(row.share)}</span><span class="share-track"><span style="width:${row.share*100}%"></span></span>`}</td><td class="row-arrow" aria-hidden="true">↗</td></tr>`).join('');
+  $('#holdings-body').innerHTML = tableRowsMarkup(filtered,prices);
   $('#empty-state').hidden = filtered.length !== 0;
   $('#results-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}`;
   $$('#holdings-body tr').forEach(row => {
@@ -270,8 +261,9 @@ $$('[data-sort]').forEach(button=>button.addEventListener('click',()=>{const sor
 $('#country-search').addEventListener('input',event=>{state.query=event.target.value;renderTable(getRows());});
 $('#clear-search').addEventListener('click',()=>{state.query='';$('#country-search').value='';renderTable(getRows());$('#country-search').focus();});
 document.addEventListener('keydown',event=>{if(event.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)&&!$$('dialog').some(dialog=>dialog.open)){event.preventDefault();$('#country-search').focus();}});
+$('#methodology-summary').textContent=scopeSummary(countries);
 $('#dataset-date').textContent=`Updated ${date(datasetMeta.reviewedAt)}`;
-$('#source-register').innerHTML=sources.map((source,index)=>`<a href="${source.url}" target="_blank" rel="noopener noreferrer"><span>${String(index+1).padStart(2,'0')} / ${safe(source.title)}<small>${safe(source.publisher)} · ${safe(source.type)} · ${date(source.asOf)}</small></span><span>↗</span></a>`).join('')+`<a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer"><span>Prices / CoinGecko<small>${prices.asOf?date(prices.asOf)+' · UTC':'Snapshot unavailable'}</small></span><span>↗</span></a>`;
+$('#source-register').innerHTML=sourceRegisterMarkup(sources,prices);
 $('#export-csv').addEventListener('click',()=>{
   const fields=['Country','ISO','Scope','Bitcoin BTC','Ethereum ETH','Selected valuation asset','Reported value USD','Share of dataset','Government snapshot date','Company snapshot dates','Price snapshot UTC','Government estimated assets','Sources'];
   const lines=getRows().filter(row=>row.name.toLowerCase().includes(state.query.toLowerCase())||row.id.toLowerCase()===state.query.toLowerCase()).map(row=>[row.name,row.id,state.businesses?'government+selected businesses':'government',row.holdings.btc??'',row.holdings.eth??'',state.asset,row.value??'',row.share??'',row.government.btc!==null||row.government.eth!==null?row.asOf:'',state.businesses?row.businesses.map(b=>b.name+': '+b.asOf).join('; '):'',prices.asOf??'',(row.estimatedAssets||[]).join('; '),row.sourceIds.map(id=>sourceById.get(id).url).join(' ')]);

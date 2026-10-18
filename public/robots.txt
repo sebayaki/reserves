@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /site/
+Disallow: /scripts/
+Disallow: /tests/
+Disallow: /research/
+
+Sitemap: https://reserves.sebayaki.com/sitemap.xml
