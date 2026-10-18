@@ -6,8 +6,8 @@ Live site: **https://reserves.sebayaki.com/**
 
 ## Experience
 
-- Natural Earth world map with bubble area proportional to selected USD value, hover reports and keyboard navigation.
-- Centered 1280px layout, with native BTC/ETH quantities and their individual USD valuations.
+- Natural Earth world map with bubble area proportional to selected USD value, hover reports and keyboard navigation. Zoom from 1× to 4×, drag to pan when enlarged, and reset to the full map.
+- Centered 1280px layout, with native BTC/ETH quantities and their individual USD valuations in both the summary and ranking table.
 - Businesses are included by default; the switch recalculates balances, valuations, ranks and dataset shares together.
 - All-assets, BTC and ETH valuation lenses; table sorting and country search.
 - Country reports with entity-level balances, disclosure dates and source links.

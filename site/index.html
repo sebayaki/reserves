@@ -34,7 +34,14 @@
             <div class="view-tabs" role="group" aria-label="Visualization"><button class="active" data-view="map" aria-pressed="true" aria-label="World map" title="World map"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg></button><button data-view="leaders" aria-pressed="false" aria-label="Top holders" title="Top holders"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h11M4 19h6"/></svg></button></div>
           </div>
           <div class="map-stage">
-            <div id="map-visual" class="map-visual"><svg id="world-map" viewBox="0 0 1300 570" role="group" aria-label="World map of reported cryptocurrency holdings"></svg></div>
+            <div id="map-visual" class="map-visual"><svg id="world-map" tabindex="0" aria-describedby="map-help" viewBox="0 0 1300 570" role="group" aria-label="World map of reported cryptocurrency holdings"></svg></div>
+            <div id="map-controls" class="map-controls" role="group" aria-label="Map zoom">
+              <button id="map-zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+              <span id="map-zoom-level" aria-live="polite">1×</span>
+              <button id="map-zoom-out" aria-label="Zoom out" title="Zoom out" disabled>−</button>
+              <button id="map-reset" aria-label="Reset map view" title="Reset view" disabled>↺</button>
+            </div>
+            <span id="map-help" class="sr-only">Use plus and minus to zoom, zero to reset, and arrow keys or drag to pan when zoomed. Hold Control or Command while scrolling to zoom.</span>
             <div id="leaders-visual" class="leaders-visual" hidden></div>
             <div id="map-tooltip" class="map-tooltip" role="status" hidden></div>
             <div class="map-bottom"><span class="map-legend"><span class="bubble-key" aria-hidden="true"><i></i><i></i><i></i></span><span id="bubble-legend-label">Bubble area · total USD</span></span><span>Public disclosures · Dated snapshots</span></div>

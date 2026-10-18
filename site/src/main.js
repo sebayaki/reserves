@@ -7,6 +7,7 @@ import { feature, mesh } from 'topojson-client';
 import world from 'world-atlas/countries-110m.json';
 import { countries, sources, datasetMeta } from './data.js';
 import { rankCountries } from './model.js';
+import { INITIAL_VIEWPORT, zoomViewport, panViewport, assetUsd } from './map-viewport.js';
 import { parsePreferences, serializePreferences } from './state.js';
 
 const $ = selector => document.querySelector(selector);
@@ -38,7 +39,11 @@ const geoCountries = feature(world, world.objects.countries).features;
 const projection = geoNaturalEarth1().rotate([-8,0]).scale(246).translate([650,319]);
 const path = geoPath(projection);
 const svg = $('#world-map');
-svg.innerHTML = `<defs><pattern id="land-dots" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".82" fill="#b9c3aa"/></pattern></defs><path class="map-graticule" d="${path(geoGraticule10())}"/><g id="countries-layer"></g><path fill="none" stroke="#cad0bd" stroke-width=".35" d="${path(mesh(world, world.objects.countries, (a,b) => a !== b))}"/><g id="markers-layer"></g>`;
+svg.innerHTML = `<defs><pattern id="land-dots" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".82" fill="#b9c3aa"/></pattern></defs><g id="map-content"><path class="map-graticule" d="${path(geoGraticule10())}"/><g id="countries-layer"></g><path fill="none" stroke="#cad0bd" stroke-width=".35" d="${path(mesh(world, world.objects.countries, (a,b) => a !== b))}"/><g id="markers-layer"></g></g>`;
+let mapViewport = {...INITIAL_VIEWPORT};
+let drag = null;
+let suppressClickUntil = 0;
+const mapContent = $('#map-content');
 const countriesLayer = $('#countries-layer');
 geoCountries.filter(country => country.id !== '010').forEach(country => {
   const node = document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -67,6 +72,69 @@ for (const country of countries) {
   });
   markerLayer.append(group);
 }
+
+function svgScreenScale() {
+  const matrix=svg.getScreenCTM();
+  return matrix?Math.max(.01,Math.hypot(matrix.a,matrix.b)):1;
+}
+function updateMapViewport(next) {
+  mapViewport=next;
+  mapContent.setAttribute('transform',`translate(${next.x} ${next.y}) scale(${next.k})`);
+  svg.classList.toggle('is-zoomed',next.k>1);
+  $('#map-zoom-in').disabled=next.k>=4;
+  $('#map-zoom-out').disabled=next.k<=1;
+  $('#map-reset').disabled=next.k===1;
+  $('#map-zoom-level').textContent=`${Number(next.k.toFixed(1))}×`;
+  const screenScale=svgScreenScale();
+  $$('.map-marker').forEach(group=>group.querySelector('.marker-hit').setAttribute('r',Math.max(22/(screenScale*next.k),Number(group.querySelector('.marker-core').getAttribute('r')))));
+  hideTooltip();
+}
+function svgPoint(event) {
+  const matrix=svg.getScreenCTM();
+  return matrix?new DOMPoint(event.clientX,event.clientY).matrixTransform(matrix.inverse()):{x:650,y:285};
+}
+$('#map-zoom-in').addEventListener('click',()=>updateMapViewport(zoomViewport(mapViewport,1.5)));
+$('#map-zoom-out').addEventListener('click',()=>updateMapViewport(zoomViewport(mapViewport,1/1.5)));
+$('#map-reset').addEventListener('click',()=>updateMapViewport({...INITIAL_VIEWPORT}));
+svg.addEventListener('wheel',event=>{
+  if(!event.ctrlKey&&!event.metaKey)return;
+  event.preventDefault();
+  updateMapViewport(zoomViewport(mapViewport,Math.exp(-Math.max(-100,Math.min(100,event.deltaY))*.005),svgPoint(event)));
+},{passive:false});
+svg.addEventListener('pointerdown',event=>{
+  if(mapViewport.k<=1||event.button!==0||!event.isPrimary)return;
+  drag={id:event.pointerId,start:svgPoint(event),viewport:{...mapViewport},moved:false,clientX:event.clientX,clientY:event.clientY};
+});
+svg.addEventListener('pointermove',event=>{
+  if(!drag||event.pointerId!==drag.id)return;
+  if(Math.hypot(event.clientX-drag.clientX,event.clientY-drag.clientY)<4&&!drag.moved)return;
+  if(!drag.moved)svg.setPointerCapture(event.pointerId);
+  drag.moved=true;
+  svg.classList.add('is-dragging');
+  const point=svgPoint(event);
+  updateMapViewport(panViewport(drag.viewport,point.x-drag.start.x,point.y-drag.start.y));
+});
+function endMapDrag(event) {
+  if(!drag||drag.id!==event.pointerId)return;
+  if(drag.moved)suppressClickUntil=performance.now()+350;
+  drag=null;
+  svg.classList.remove('is-dragging');
+  if(svg.hasPointerCapture(event.pointerId))svg.releasePointerCapture(event.pointerId);
+}
+svg.addEventListener('pointerup',endMapDrag);
+svg.addEventListener('pointercancel',endMapDrag);
+svg.addEventListener('lostpointercapture',endMapDrag);
+svg.addEventListener('click',event=>{if(performance.now()<suppressClickUntil){event.preventDefault();event.stopPropagation();}},{capture:true});
+svg.addEventListener('keydown',event=>{
+  if(['+','='].includes(event.key)){event.preventDefault();updateMapViewport(zoomViewport(mapViewport,1.5));}
+  else if(event.key==='-'){event.preventDefault();updateMapViewport(zoomViewport(mapViewport,1/1.5));}
+  else if(event.key==='0'){event.preventDefault();updateMapViewport({...INITIAL_VIEWPORT});}
+  else if(mapViewport.k>1&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+    event.preventDefault();
+    const delta={ArrowLeft:[80,0],ArrowRight:[-80,0],ArrowUp:[0,80],ArrowDown:[0,-80]}[event.key];
+    updateMapViewport(panViewport(mapViewport,...delta));
+  }
+});
 
 function getRows(sort = state.sort) { return rankCountries(countries,state.businesses,state.asset,prices,sort,state.direction); }
 function showTooltip(id) {
@@ -104,6 +172,7 @@ function render() {
   $$('[data-asset]').forEach(button => {const active = button.dataset.asset === state.asset;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
   $$('[data-view]').forEach(button => {const active = button.dataset.view === state.view;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
   $('#map-visual').hidden = state.view !== 'map';
+  $('#map-controls').hidden = state.view !== 'map';
   $('#leaders-visual').hidden = state.view !== 'leaders';
   $('#country-count').textContent = `${countries.length} countries & territories`;
   renderMap(rows);
@@ -116,8 +185,8 @@ function renderMap(rows) {
   const maxValue = Math.max(1,...rows.map(row => row.value??0));
   $('#bubble-legend-label').textContent = `${state.view === 'map' ? 'Bubble area' : 'Bar length'} · ${state.asset === 'all' ? 'total' : state.asset.toUpperCase()} USD`;
   $('.bubble-key').hidden = state.view !== 'map';
-  const screenScale = Math.max(0.1,svg.getBoundingClientRect().width / 1300);
-  const hitRadius = 22 / screenScale;
+  const screenScale = svgScreenScale();
+  const hitRadius = 22 / (screenScale * mapViewport.k);
   [...rows].sort((a,b)=>(b.value??0)-(a.value??0)).forEach(row => {
     const countryPath = $(`#countries-layer [data-country="${row.id}"]`);
     if (countryPath) {countryPath.classList.add('map-country');countryPath.classList.toggle('is-missing',row.value === null);}
@@ -133,9 +202,13 @@ function renderMap(rows) {
     group.setAttribute('aria-label',`${row.name}: ${row.value === null ? 'No verified amount in this view' : money(row.value)}. View sources and holdings.`);
   });
 }
+function assetValueLine(quantity,price) {
+  const value=assetUsd(quantity,price);
+  return value===null?'':`<small class="table-asset-usd" aria-label="${safe(money(value))} USD">${money(value)}</small>`;
+}
 function renderTable(rows) {
   const filtered = rows.filter(row => row.name.toLowerCase().includes(state.query.toLowerCase()) || row.id.toLowerCase() === state.query.toLowerCase());
-  $('#holdings-body').innerHTML = filtered.map(row => `<tr tabindex="0" role="row" data-country="${row.id}" class="${row.rank===1?'rank-first':''}" aria-label="${safe(row.name)}, ${row.rank ? `rank ${row.rank}` : 'no verified amount'}, view details"><td class="rank-cell">${row.rank ? String(row.rank).padStart(2,'0') : '—'}</td><td><div class="country-cell-content"><span class="flag" aria-hidden="true">${row.flag}</span><span class="country-name">${safe(row.name)}</span></div></td><td class="number-column"><span class="asset-number ${row.holdings.btc===null?'missing-value':''}">${number(row.holdings.btc)}</span></td><td class="number-column"><span class="asset-number ${row.holdings.eth===null?'missing-value':''}">${number(row.holdings.eth)}</span></td><td class="number-column"><span class="value-number ${row.value===null?'missing-value':''}">${money(row.value)}</span></td><td class="share-cell">${row.share===null?'<span class="missing-value">—</span>':`<span class="share-cell-value">${share(row.share)}</span><span class="share-track"><span style="width:${row.share*100}%"></span></span>`}</td><td class="row-arrow" aria-hidden="true">↗</td></tr>`).join('');
+  $('#holdings-body').innerHTML = filtered.map(row => `<tr tabindex="0" role="row" data-country="${row.id}" class="${row.rank===1?'rank-first':''}" aria-label="${safe(row.name)}, ${row.rank ? `rank ${row.rank}` : 'no verified amount'}, view details"><td class="rank-cell">${row.rank ? String(row.rank).padStart(2,'0') : '—'}</td><td><div class="country-cell-content"><span class="flag" aria-hidden="true">${row.flag}</span><span class="country-name">${safe(row.name)}</span></div></td><td class="number-column"><span class="asset-number ${row.holdings.btc===null?'missing-value':''}">${number(row.holdings.btc)}</span>${assetValueLine(row.holdings.btc,prices.bitcoin.usd)}</td><td class="number-column"><span class="asset-number ${row.holdings.eth===null?'missing-value':''}">${number(row.holdings.eth)}</span>${assetValueLine(row.holdings.eth,prices.ethereum.usd)}</td><td class="number-column"><span class="value-number ${row.value===null?'missing-value':''}">${money(row.value)}</span></td><td class="share-cell">${row.share===null?'<span class="missing-value">—</span>':`<span class="share-cell-value">${share(row.share)}</span><span class="share-track"><span style="width:${row.share*100}%"></span></span>`}</td><td class="row-arrow" aria-hidden="true">↗</td></tr>`).join('');
   $('#empty-state').hidden = filtered.length !== 0;
   $('#results-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}`;
   $$('#holdings-body tr').forEach(row => {
