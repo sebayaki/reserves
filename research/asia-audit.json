@@ -1,0 +1,174 @@
+{
+  "auditedAt": "2026-10-18",
+  "methodology": "Exact quantities transcribed from issuer/regulatory disclosures; no market-value conversions. Corporate group headquarters attribution. Subsidiaries not added separately to consolidated parent. Null means no currently verified unit count, not zero.",
+  "businesses": [
+    {
+      "id": "dunamu",
+      "name": "Dunamu Inc. (Upbit operator)",
+      "country": "South Korea",
+      "countryCode": "KR",
+      "headquarters": "Seoul, South Korea",
+      "legalEntity": "두나무 주식회사 / Dunamu Inc.",
+      "scope": "consolidated proprietary holdings",
+      "btc": 16587,
+      "eth": 12329,
+      "asOf": "2026-06-30",
+      "publishedAt": "2026-08-14",
+      "status": "primary_verified",
+      "sourceIds": [
+        "dunamu-2026h1",
+        "dunamu-2026h1-profile"
+      ],
+      "crosscheckSourceIds": [
+        "dunamu-crosscheck"
+      ],
+      "notes": "Company-owned intangible assets, Note 13(2); subsidiaries included. The filing reports quantities in whole coins, so preserve that disclosed precision. Do not add Dunamu & Partners separately.",
+      "standaloneNotAdditive": {
+        "btc": 14505,
+        "eth": 12327,
+        "asOf": "2026-06-30",
+        "sourceId": "dunamu-2026h1-standalone"
+      },
+      "excludedClientCustody": {
+        "btc": 173911,
+        "eth": 2338007,
+        "asOf": "2026-06-30",
+        "reason": "Note 13(3): customer assets are not controlled by the parent and are not recognized as its assets."
+      }
+    },
+    {
+      "id": "nexon",
+      "name": "NEXON Co., Ltd.",
+      "country": "Japan",
+      "countryCode": "JP",
+      "headquarters": "Tokyo, Japan",
+      "legalEntity": "株式会社ネクソン / NEXON Co., Ltd.",
+      "ticker": "3659.T",
+      "scope": "corporate proprietary holdings",
+      "btc": null,
+      "eth": null,
+      "asOf": "2026-06-30",
+      "status": "holdings_confirmed_current_units_undisclosed",
+      "lastDisclosedBtc": 1717,
+      "lastDisclosedBtcDate": "2021-04-28",
+      "sourceIds": [
+        "nexon-purchase-2021",
+        "nexon-2026h1",
+        "nexon-profile"
+      ],
+      "crosscheckSourceIds": [
+        "nexon-tracker"
+      ],
+      "notes": "Primary issuer release purchased 1,717 BTC in April 2021. Latest H1 2026 filing confirms bitcoin investment but supplies yen fair value only (16,355 million yen), not units. Do not derive units using a market price or describe 1,717 as freshly disclosed in 2026. If product methodology allows stale holdings, show 1,717 as last disclosed 2021-04-28 with a visible stale-data qualification. Tokyo headquarters and Japanese registered entity establish Japan attribution despite Korean origins and subsidiaries.",
+      "stale": true,
+      "quantityLabel": "Current quantity undisclosed",
+      "currentUnitsVerified": false
+    }
+  ],
+  "countryAdditions": [
+    {
+      "countryCode": "KR",
+      "businessBtc": 16587,
+      "businessEth": 12329,
+      "scope": "Verified covered companies only, not national total",
+      "businessIds": [
+        "dunamu"
+      ],
+      "asOf": "2026-06-30"
+    },
+    {
+      "countryCode": "JP",
+      "businessBtc": null,
+      "businessEth": null,
+      "scope": "Nexon current unit count unavailable; historical 1,717 BTC excluded from current total",
+      "businessIds": [
+        "nexon"
+      ],
+      "asOf": "2026-06-30",
+      "stale": true
+    }
+  ],
+  "candidatesNotYetPrimaryVerified": [
+    {
+      "name": "Bithumb",
+      "countryCode": "KR",
+      "btc": null,
+      "eth": null,
+      "reportedBtc": 294,
+      "reportedEth": 3138,
+      "reportedAsOf": "2026-06-30",
+      "sourceIds": [
+        "bithumb-candidate"
+      ],
+      "reason": "Secondary reporting identifies own-account coins and separates customer coins (47,117 BTC and 658,212 ETH), but underlying DART table was not independently retrieved in this audit; exclude until primary verified."
+    }
+  ],
+  "sources": [
+    {
+      "id": "dunamu-2026h1",
+      "title": "Dunamu 2026 half-year report, consolidated financial statements Note 13",
+      "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260814003803&dcmNo=11538594&eleId=24&offset=452986&length=276461&dtd=dart4.xsd",
+      "type": "primary-regulatory-filing",
+      "published": "2026-08-14",
+      "asOf": "2026-06-30",
+      "locator": "III.3 consolidated notes, Note 13 Intangible assets, tables (2) and (3)"
+    },
+    {
+      "id": "dunamu-2026h1-standalone",
+      "title": "Dunamu 2026 half-year report, standalone financial statements",
+      "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260814003803&dcmNo=11538594&eleId=30&offset=886832&length=218399&dtd=dart4.xsd",
+      "type": "primary-regulatory-filing",
+      "published": "2026-08-14",
+      "asOf": "2026-06-30"
+    },
+    {
+      "id": "dunamu-2026h1-profile",
+      "title": "Dunamu 2026 half-year report, corporate overview",
+      "url": "https://dart.fss.or.kr/report/viewer.do?rcpNo=20260814003803&dcmNo=11538594&eleId=4&offset=6148&length=9648&dtd=dart4.xsd",
+      "type": "primary-regulatory-filing"
+    },
+    {
+      "id": "nexon-purchase-2021",
+      "title": "Nexon Purchases $100 Million Worth of Bitcoin",
+      "url": "https://pdf.irpocket.com/C3659/BbNL/qYha/Sr9r.pdf",
+      "type": "primary-issuer-release",
+      "published": "2021-04-28",
+      "asOf": "2021-04-28"
+    },
+    {
+      "id": "nexon-2026h1",
+      "title": "Nexon 2026 half-year report, EDINET S100YWN3",
+      "url": "https://disclosure2dl.edinet-fsa.go.jp/searchdocument/pdf/S100YWN3.pdf",
+      "type": "primary-regulatory-filing",
+      "asOf": "2026-06-30",
+      "locator": "Page 32 of 40, Note 7(4)"
+    },
+    {
+      "id": "nexon-profile",
+      "title": "NEXON corporate profile",
+      "url": "https://www.nexon.co.jp/en/about/",
+      "type": "primary-issuer-profile"
+    },
+    {
+      "id": "nexon-tracker",
+      "title": "The Block NEXON treasury tracker",
+      "url": "https://www.theblock.co/treasuries/3659.t",
+      "type": "secondary-tracker",
+      "note": "Reports 1,717 BTC in October 2026; this does not refresh the primary disclosure date."
+    },
+    {
+      "id": "dunamu-crosscheck",
+      "title": "DealSite: Dunamu corporate crypto assets in H1 2026",
+      "url": "https://dealsite.co.kr/articles/167800",
+      "type": "secondary-news",
+      "note": "Corroborates consolidated 16,587 BTC and 12,329 ETH."
+    },
+    {
+      "id": "bithumb-candidate",
+      "title": "DigitalDaily: Corporate and customer balances in H1 2026",
+      "url": "https://news.nate.com/view/20260819n19055",
+      "type": "secondary-news",
+      "published": "2026-08-19"
+    }
+  ]
+}

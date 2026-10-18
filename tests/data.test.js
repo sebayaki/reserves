@@ -147,3 +147,31 @@ test('price refresh rejects incomplete or malformed quotes without changing the 
     assert.deepEqual(result.files, ['prices.json']);
   }
 });
+
+test('exchange customer custody and historical Nexon purchase do not enter holdings totals', () => {
+  const korea = countries.find(country => country.id === 'KR');
+  const dunamu = korea.businesses.find(business => business.sourceId === 'dunamu-2026h1');
+  assert.equal(dunamu.btc, 16587);
+  assert.equal(dunamu.eth, 12329);
+  assert.deepEqual(getHoldings(korea, true), { btc: 16587, eth: 12329 });
+  const japan = countries.find(country => country.id === 'JP');
+  const nexon = japan.businesses.find(business => business.name === 'NEXON Co., Ltd.');
+  assert.equal(nexon.btc, null);
+  assert.equal(nexon.eth, null);
+  assert.equal(getHoldings(japan, true).btc, 44000);
+});
+
+test('government estimates and corporate approximation metadata remain explicit', () => {
+  for (const id of ['US', 'GB', 'SV', 'BT']) {
+    assert.ok(countries.find(country => country.id === id).estimatedAssets.includes('btc'));
+  }
+  const btcs = countries.find(country => country.id === 'US').businesses.find(business => business.sourceId === 'btcs');
+  assert.equal(btcs.eth, 51226);
+  for (const country of countries) {
+    assert.equal(new Set(country.businesses.map(business => business.sourceId)).size, country.businesses.length);
+    for (const business of country.businesses) {
+      assert.ok(country.sourceIds.includes(business.sourceId));
+      assert.ok(Number.isFinite(Date.parse(business.asOf)));
+    }
+  }
+});

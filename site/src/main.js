@@ -6,7 +6,8 @@ import { geoNaturalEarth1, geoPath, geoGraticule10 } from 'd3-geo';
 import { feature, mesh } from 'topojson-client';
 import world from 'world-atlas/countries-110m.json';
 import { countries, sources, datasetMeta } from './data.js';
-import { getHoldings, rankCountries } from './model.js';
+import { rankCountries } from './model.js';
+import { parsePreferences, serializePreferences } from './state.js';
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -14,14 +15,14 @@ const safe = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&am
 const number = value => value === null ? '—' : new Intl.NumberFormat('en-US', {maximumFractionDigits:2}).format(value);
 const compact = value => value === null ? '—' : new Intl.NumberFormat('en-US', {notation:'compact',maximumFractionDigits:2}).format(value);
 const money = value => value === null ? '—' : '$' + compact(value);
+const share = value => value > 0 && value < 0.001 ? '&lt;0.1%' : `${(value * 100).toFixed(1)}%`;
+const estimated = (row, asset = state.asset) => [...(row.estimatedAssets || []), ...(state.businesses ? row.businesses.flatMap(b => b.estimatedAssets || []) : [])].some(key => asset === 'all' || key === asset);
+const prefix = (row, asset) => estimated(row, asset) ? '≈' : '';
 const date = value => new Intl.DateTimeFormat('en-GB', {day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(value));
 const sourceById = new Map(sources.map(source => [source.id, source]));
-const params = new URLSearchParams(location.search);
 const state = {
-  asset: ['btc','eth'].includes(params.get('asset')) ? params.get('asset') : 'all',
-  businesses: params.get('companies') === '1',
-  view: params.get('view') === 'leaders' ? 'leaders' : 'map',
-  query: '', sort: 'value', direction: 'desc', selected: null,
+  ...parsePreferences(location.search),
+  query: '', sort: 'value', direction: 'desc',
 };
 let prices = {bitcoin:{usd:null}, ethereum:{usd:null}, asOf:null};
 try {
@@ -32,8 +33,8 @@ try {
   prices = snapshot;
 } catch { $('#price-status').textContent = 'Price snapshot unavailable'; }
 
-const numericIds = {US:'840',GB:'826',SV:'222',BT:'064',TW:'158',JP:'392',CA:'124',FR:'250',BR:'076'};
-const byNumericId = new Map(countries.map(country => [numericIds[country.id], country]));
+const numericIds = {US:'840',GB:'826',SV:'222',BT:'064',TW:'158',JP:'392',CA:'124',FR:'250',BR:'076',KR:'410',SE:'752',SG:'702',NL:'528',DE:'276',IL:'376',AE:'784',HK:'344',AU:'036',CZ:'203',NO:'578',CH:'756',TH:'764',MT:'470'};
+const byNumericId = new Map(countries.map(country => [country.numericId || numericIds[country.id], country]));
 const geoCountries = feature(world, world.objects.countries).features;
 const projection = geoNaturalEarth1().rotate([-8,0]).scale(246).translate([650,319]);
 const path = geoPath(projection);
@@ -48,7 +49,6 @@ geoCountries.filter(country => country.id !== '010').forEach(country => {
   countriesLayer.append(node);
 });
 const markerLayer = $('#markers-layer');
-const offsets = {US:[36,-4],GB:[16,-20],SV:[12,23],BT:[12,-15],TW:[18,16],CA:[12,-10],FR:[14,15],BR:[14,8],JP:[14,-10]};
 for (const country of countries) {
   const point = projection(country.coordinates);
   const group = document.createElementNS('http://www.w3.org/2000/svg','g');
@@ -57,9 +57,7 @@ for (const country of countries) {
   group.setAttribute('role','button');
   group.setAttribute('tabindex','0');
   group.dataset.country = country.id;
-  const [dx,dy] = offsets[country.id] || [15,-10];
-  const label = ['US','GB','SV','BT','TW'].includes(country.id);
-  group.innerHTML = `<circle class="marker-halo" r="15"/><circle class="marker-core" r="5"/><circle class="marker-dot" r="1.8"/>${label ? `<text class="marker-label" x="${dx}" y="${dy}">${safe(country.name)}</text><text class="marker-value" x="${dx}" y="${dy+14}"></text>` : ''}`;
+  group.innerHTML = '<circle class="marker-halo" r="15"/><circle class="marker-hit" r="24" fill="transparent"/><circle class="marker-core" r="6"/><circle class="marker-dot" r="1.8"/><text class="marker-number" text-anchor="middle" dominant-baseline="central" pointer-events="none"></text>';
   group.addEventListener('mouseenter',() => showTooltip(country.id));
   group.addEventListener('mouseleave',hideTooltip);
   group.addEventListener('focus',() => showTooltip(country.id));
@@ -75,19 +73,15 @@ function getRows(sort = state.sort) { return rankCountries(countries,state.busin
 function showTooltip(id) {
   const row = getRows().find(country => country.id === id);
   const tooltip = $('#map-tooltip');
-  tooltip.innerHTML = `<div class="tooltip-country">${safe(row.name)} <span>${row.flag}</span></div><strong class="tooltip-value">${money(row.value)}</strong><span class="tooltip-meta">${row.value === null ? 'No verified amount in this view' : `${row.rank ? `#${row.rank} in this dataset · ` : ''}${state.businesses ? 'Government + selected companies' : 'Government holdings'}`}</span>`;
+  tooltip.innerHTML = `<div class="tooltip-country"><span aria-hidden="true">${row.flag}</span> ${safe(row.name)}</div><strong class="tooltip-value">${prefix(row)}${money(row.value)}</strong>${row.rank ? `<span class="tooltip-meta">#${row.rank}</span>` : ''}`;
   tooltip.hidden = false;
   highlightCountry(id);
 }
 function hideTooltip() { $('#map-tooltip').hidden = true; highlightCountry(null); }
 function highlightCountry(id) { $$('#countries-layer [data-country]').forEach(node => node.classList.toggle('is-active',node.dataset.country === id)); }
 function updateUrl() {
-  const query = new URLSearchParams();
-  if (state.asset !== 'all') query.set('asset',state.asset);
-  if (state.businesses) query.set('companies','1');
-  if (state.view !== 'map') query.set('view',state.view);
-  if (state.selected) query.set('country',state.selected);
-  history.replaceState(null,'',location.pathname+(query.size ? '?'+query : '')+location.hash);
+  const query = serializePreferences(state);
+  history.replaceState(null,'',location.pathname+(query ? '?'+query : '')+location.hash);
 }
 function render() {
   const rows = getRows();
@@ -97,22 +91,19 @@ function render() {
     return values.length ? values.reduce((sum,value) => sum+value,0) : null;
   });
   $('#business-toggle').checked = state.businesses;
-  $('#map-scope').textContent = state.businesses ? '/ + BUSINESSES' : '/ GOVERNMENTS';
-  $('#stat-scope').innerHTML = state.businesses ? 'Government + selected<br>business holdings' : 'Government holdings<br>in this dataset';
-  $('#table-scope').textContent = state.businesses ? 'Government + selected businesses' : 'Government holdings';
-  $('#total-btc').textContent = compact(totalHoldings[0]);
-  $('#total-eth').textContent = compact(totalHoldings[1]);
-  $('#total-value').textContent = money(totalValue);
-  $('#btc-share').textContent = totalHoldings[0] === null ? 'No verified amount in this view' : `${(totalHoldings[0]/21000000*100).toFixed(2)}% of Bitcoin’s 21M maximum supply`;
-  $('.stat-value .stat-label').textContent = state.asset === 'all' ? 'Combined reported value' : `${state.asset === 'btc' ? 'Bitcoin' : 'Ethereum'} reported value`;
-  if (prices.asOf) $('#price-status').textContent = `Prices · ${date(prices.asOf)} · UTC`;
+  $('#total-btc').textContent = (rows.some(row => estimated(row,'btc')) ? '≈' : '') + compact(totalHoldings[0]);
+  $('#total-eth').textContent = (rows.some(row => estimated(row,'eth')) ? '≈' : '') + compact(totalHoldings[1]);
+  $('#total-value').textContent = (rows.some(row => estimated(row)) ? '≈' : '') + money(totalValue);
+  $('.stat-value .stat-label').textContent = state.asset === 'all' ? 'Value (USD)' : `${state.asset.toUpperCase()} value (USD)`;
+  if (prices.asOf) $('#price-status').textContent = `Prices ${date(prices.asOf)}`;
   const header = $('#value-heading button');
-  header.innerHTML = `${state.asset === 'all' ? 'Reported' : state.asset === 'btc' ? 'Bitcoin' : 'Ethereum'} value <span>${state.sort === 'value' ? (state.direction === 'desc' ? '↓' : '↑') : '↕'}</span>`;
+  header.innerHTML = `Value <span>${state.sort === 'value' ? (state.direction === 'desc' ? '↓' : '↑') : '↕'}</span>`;
+  header.setAttribute('aria-label', `Sort by ${state.asset === 'all' ? 'combined' : state.asset.toUpperCase()} value in USD`);
   $$('[data-asset]').forEach(button => {const active = button.dataset.asset === state.asset;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
   $$('[data-view]').forEach(button => {const active = button.dataset.view === state.view;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));});
   $('#map-visual').hidden = state.view !== 'map';
   $('#leaders-visual').hidden = state.view !== 'leaders';
-  $('#country-count').textContent = `/ ${countries.length} countries`;
+  $('#country-count').textContent = `${countries.length} countries & territories`;
   renderMap(rows);
   renderTable(rows);
   renderLeaders(rows);
@@ -128,22 +119,22 @@ function renderMap(rows) {
     const core = group.querySelector('.marker-core');
     const halo = group.querySelector('.marker-halo');
     const missing = row.value === null;
-    const radius = missing ? 3 : 4+Math.sqrt(Math.max(0,row.value)/maxValue)*22;
+    const radius = missing ? 3 : 6+Math.sqrt(Math.max(0,row.value)/maxValue)*17;
     core.setAttribute('r',radius);
     core.classList.toggle('map-missing-point',missing);
     halo.setAttribute('r',missing ? 8 : radius+9);
     halo.style.opacity = missing ? '0' : '';
-    group.querySelector('.marker-dot').style.display = missing ? 'none' : '';
-    const value = group.querySelector('.marker-value');
-    if (value) value.textContent = money(row.value);
-    group.setAttribute('aria-label',`${row.name}: ${row.value === null ? 'No verified amount in this view' : money(row.value)}. View sources and holdings.`);
+    const showRank = !missing && row.rank <= 3 && radius >= 11;
+    group.querySelector('.marker-dot').style.display = missing || showRank ? 'none' : '';
+    group.querySelector('.marker-number').textContent = showRank ? row.rank : '';
+    group.setAttribute('aria-label',`${row.name}: ${row.value === null ? 'No verified amount in this view' : prefix(row)+money(row.value)}. View sources and holdings.`);
   });
 }
 function renderTable(rows) {
   const filtered = rows.filter(row => row.name.toLowerCase().includes(state.query.toLowerCase()) || row.id.toLowerCase() === state.query.toLowerCase());
-  $('#holdings-body').innerHTML = filtered.map(row => `<tr tabindex="0" role="row" data-country="${row.id}" class="${row.rank===1?'rank-first':''}" aria-label="${safe(row.name)}, ${row.rank ? `rank ${row.rank}` : 'no verified amount'}, view details"><td class="rank-cell">${row.rank ? String(row.rank).padStart(2,'0') : '—'}</td><td><div class="country-cell-content"><span class="flag" aria-hidden="true">${row.flag}</span><span><span class="country-name">${safe(row.name)}</span><span class="country-region">${safe(row.region)}</span></span></div></td><td class="number-column"><span class="asset-number ${row.holdings.btc===null?'missing-value':''}">${number(row.holdings.btc)}</span>${row.holdings.btc!==null?'<span class="asset-unit">BTC</span>':''}</td><td class="number-column"><span class="asset-number ${row.holdings.eth===null?'missing-value':''}">${number(row.holdings.eth)}</span>${row.holdings.eth!==null?'<span class="asset-unit">ETH</span>':''}</td><td class="number-column"><span class="value-number ${row.value===null?'missing-value':''}">${money(row.value)}</span></td><td class="share-cell">${row.share===null?'<span class="missing-value">—</span>':`<span class="share-cell-value">${(row.share*100).toFixed(2)}%</span><span class="share-track"><span style="width:${row.share*100}%"></span></span>`}</td><td class="row-arrow" aria-hidden="true">↗</td></tr>`).join('');
+  $('#holdings-body').innerHTML = filtered.map(row => `<tr tabindex="0" role="row" data-country="${row.id}" class="${row.rank===1?'rank-first':''}" aria-label="${safe(row.name)}, ${row.rank ? `rank ${row.rank}` : 'no verified amount'}, view details"><td class="rank-cell">${row.rank ? String(row.rank).padStart(2,'0') : '—'}</td><td><div class="country-cell-content"><span class="flag" aria-hidden="true">${row.flag}</span><span class="country-name">${safe(row.name)}</span></div></td><td class="number-column"><span class="asset-number ${row.holdings.btc===null?'missing-value':''}">${prefix(row,'btc')}${number(row.holdings.btc)}</span></td><td class="number-column"><span class="asset-number ${row.holdings.eth===null?'missing-value':''}">${prefix(row,'eth')}${number(row.holdings.eth)}</span></td><td class="number-column"><span class="value-number ${row.value===null?'missing-value':''}">${prefix(row)}${money(row.value)}</span></td><td class="share-cell">${row.share===null?'<span class="missing-value">—</span>':`<span class="share-cell-value">${share(row.share)}</span><span class="share-track"><span style="width:${row.share*100}%"></span></span>`}</td><td class="row-arrow" aria-hidden="true">↗</td></tr>`).join('');
   $('#empty-state').hidden = filtered.length !== 0;
-  $('#results-count').textContent = `${filtered.length} of ${countries.length} countries`;
+  $('#results-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}`;
   $$('#holdings-body tr').forEach(row => {
     row.addEventListener('click',() => openCountry(row.dataset.country));
     row.addEventListener('keydown',event => {if (['Enter',' '].includes(event.key)){event.preventDefault();openCountry(row.dataset.country);}});
@@ -161,7 +152,7 @@ function renderTable(rows) {
 function renderLeaders(rows) {
   const ranked = [...rows].filter(row => row.value !== null && row.value > 0).sort((a,b) => b.value-a.value).slice(0,5);
   const max = ranked[0]?.value || 1;
-  $('#leaders-visual').innerHTML = ranked.map(row => `<button class="leader-row" data-country="${row.id}"><span class="leader-rank">${String(row.rank).padStart(2,'0')}</span><span class="leader-country"><span aria-hidden="true">${row.flag}</span>${safe(row.name)}</span><span class="leader-bar-track"><span class="leader-bar" style="width:${row.value/max*100}%"></span></span><span class="leader-value">${money(row.value)}</span></button>`).join('')+`<p class="leader-caption">TOP ${ranked.length} / BY ${state.asset==='all'?'COMBINED':state.asset.toUpperCase()} USD VALUE · CURRENT DATASET ONLY</p>`;
+  $('#leaders-visual').innerHTML = ranked.map(row => `<button class="leader-row" data-country="${row.id}" aria-label="${safe(row.name)}, rank ${row.rank}, ${prefix(row)}${money(row.value)}. View details."><span class="leader-rank">${String(row.rank).padStart(2,'0')}</span><span class="leader-country"><span aria-hidden="true">${row.flag}</span>${safe(row.name)}</span><span class="leader-bar-track"><span class="leader-bar" style="width:${row.value/max*100}%"></span></span><span class="leader-value">${prefix(row)}${money(row.value)}</span></button>`).join('');
   $$('#leaders-visual [data-country]').forEach(button => button.addEventListener('click',() => openCountry(button.dataset.country)));
 }
 function openCountry(id) {
@@ -174,14 +165,18 @@ function openCountry(id) {
 }
 function renderCountry(id) {
   const row = getRows().find(country => country.id===id);
-  const assetName = state.asset === 'all' ? 'Combined' : state.asset === 'btc' ? 'Bitcoin' : 'Ethereum';
-  const entity = (name,holdings,asOf,sourceId,note='') => `<div class="entity-row"><div>${safe(name)}<small>${safe(note)}${asOf?`<br>Snapshot / ${date(asOf)}`:''}${sourceId?` · <a href="${sourceById.get(sourceId).url}" target="_blank" rel="noopener noreferrer">Source ↗</a>`:''}</small></div><div class="entity-balances">${number(holdings.btc)} BTC<br>${number(holdings.eth)} ETH</div></div>`;
-  $('#country-detail').innerHTML = `<div class="dialog-top"><span class="eyebrow">Country report / ${row.id}</span><button class="close-button" data-country-close aria-label="Close country details">×</button></div><div class="country-heading"><span class="flag" aria-hidden="true">${row.flag}</span><div><h2 id="country-title">${safe(row.name)}</h2><p>${safe(row.region)} ${row.rank?`/ #${row.rank} in this dataset`:''}</p></div></div><div class="country-value-label">${assetName} reported value · ${state.businesses?'Government + selected companies':'Government'}</div><div class="country-value">${money(row.value)}</div><p class="country-value-meta">${prices.asOf?`USD prices as of ${date(prices.asOf)} · UTC`:'Price snapshot unavailable'}${state.businesses?'<br>Sum of disclosed amounts; country coverage may be partial.':''}</p><div class="detail-assets"><div><span>Bitcoin</span><strong>${number(row.holdings.btc)} <small>BTC</small></strong></div><div><span>Ethereum</span><strong>${number(row.holdings.eth)} <small>ETH</small></strong></div></div><p class="country-note">${safe(row.note)}</p><div class="entity-heading"><h3>Behind the balance</h3><span>Native asset units</span></div>${entity('Government',row.government,row.government.btc===null&&row.government.eth===null?null:row.asOf,row.sourceIds.find(sourceId=>!row.businesses.some(b=>b.sourceId===sourceId)),row.governmentType)}${state.businesses?row.businesses.map(business=>entity(business.name,business,business.asOf,business.sourceId)).join(''):row.businesses.length?`<div class="entity-row"><div>${row.businesses.length} disclosed ${row.businesses.length===1?'business':'businesses'}<small>Excluded from this view</small></div><button class="text-link" id="detail-include">Include businesses ↗</button></div>`:''}<div class="country-source-links">${row.sourceIds.map(sourceId=>sourceById.get(sourceId)).filter(Boolean).map(source=>`<a href="${source.url}" target="_blank" rel="noopener noreferrer"><span>${safe(source.publisher)}<br>${safe(source.type)} · ${date(source.asOf)}</span><span>↗</span></a>`).join('')}</div><div class="dialog-actions"><button class="text-link" id="copy-country-link">Copy this view <span>↗</span></button><span>— No verified amount included</span></div>`;
+  const assetName = state.asset === 'all' ? 'Value' : `${state.asset.toUpperCase()} value`;
+  const entity = (name,holdings,asOf,sourceId,note = '',estimateAssets = [],quantityLabel = '') => {
+    const balances = ['btc','eth'].filter(asset => holdings[asset] !== null).map(asset => `${estimateAssets.includes(asset) ? '≈' : ''}${number(holdings[asset])} <small>${asset.toUpperCase()}</small>`).join('<br>') || '<span class="missing-value" title="No verified amount included">—</span>';
+    const source = sourceById.get(sourceId);
+    return `<div class="entity-row"><div>${safe(name)}${quantityLabel ? `<small class="quantity-status">${safe(quantityLabel)}</small>` : ''}${asOf || source ? `<small>${asOf ? date(asOf) : ''}${source ? `${asOf ? ' · ' : ''}<a href="${source.url}" target="_blank" rel="noopener noreferrer" aria-label="${safe(name)} source">Source ↗</a>` : ''}</small>` : ''}</div><div class="entity-balances">${balances}</div>${note ? `<details class="entity-note"><summary>Details</summary><p>${safe(note)}</p></details>` : ''}</div>`;
+  };
+  $('#country-detail').innerHTML = `<div class="dialog-top"><span class="eyebrow">${row.id}${row.rank ? ` / #${row.rank}` : ''}</span><button class="close-button" data-country-close aria-label="Close country details">×</button></div><div class="country-heading"><span class="flag" aria-hidden="true">${row.flag}</span><div><h2 id="country-title">${safe(row.name)}</h2></div></div><div class="country-value-label">${assetName} (USD) · ${state.businesses?'Government + businesses':'Government'}</div><div class="country-value">${prefix(row)}${money(row.value)}</div><p class="country-value-meta">${prices.asOf?`Prices ${date(prices.asOf)}`:'Prices unavailable'}</p><div class="detail-assets"><div><span>Bitcoin</span><strong>${prefix(row,'btc')}${number(row.holdings.btc)} <small>BTC</small></strong></div><div><span>Ethereum</span><strong>${prefix(row,'eth')}${number(row.holdings.eth)} <small>ETH</small></strong></div></div><div class="entity-heading"><h3>Holdings</h3></div>${entity('Government',row.government,row.government.btc===null&&row.government.eth===null?null:row.asOf,row.government.btc===null&&row.government.eth===null?null:row.sourceIds.find(sourceId=>!row.businesses.some(b=>b.sourceId===sourceId)),'',row.estimatedAssets || [])}${state.businesses?row.businesses.map(business=>entity(business.name,business,business.asOf,business.sourceId,business.note,business.estimatedAssets || [],business.quantityLabel)).join(''):row.businesses.length?`<div class="entity-row"><button class="text-link" id="detail-include">Include ${row.businesses.length} ${row.businesses.length===1?'business':'businesses'} ↗</button></div>`:''}<details class="detail-disclosure"><summary>Notes</summary><p class="country-note">${safe(row.governmentType)}. ${safe(row.note)}</p></details><details class="detail-disclosure"><summary>Sources <span>${row.sourceIds.length}</span></summary><div class="country-source-links">${row.sourceIds.map(sourceId=>sourceById.get(sourceId)).filter(Boolean).map(source=>`<a href="${source.url}" target="_blank" rel="noopener noreferrer"><span>${safe(source.publisher)}<br>${safe(source.type)} · ${date(source.asOf)}</span><span>↗</span></a>`).join('')}</div></details><div class="dialog-actions"><button class="text-link" id="copy-country-link">Copy link <span>↗</span></button><span>≈ Estimate · — Unverified</span></div>`;
   $('[data-country-close]').addEventListener('click',() => $('#country-dialog').close());
   $('#detail-include')?.addEventListener('click',() => {state.businesses=true;render();});
   $('#copy-country-link').addEventListener('click',async () => {
-    try {await navigator.clipboard.writeText(location.href);toast('Link copied. A country, a new perspective.');}
-    catch {toast('Copy the address in your browser to share this view.');}
+    try {await navigator.clipboard.writeText(location.href);toast('Link copied');}
+    catch {toast('Share the URL in your browser');}
   });
 }
 let toastTimeout;
@@ -199,17 +194,17 @@ $$('[data-sort]').forEach(button=>button.addEventListener('click',()=>{const sor
 $('#country-search').addEventListener('input',event=>{state.query=event.target.value;renderTable(getRows());});
 $('#clear-search').addEventListener('click',()=>{state.query='';$('#country-search').value='';renderTable(getRows());$('#country-search').focus();});
 document.addEventListener('keydown',event=>{if(event.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)&&!$$('dialog').some(dialog=>dialog.open)){event.preventDefault();$('#country-search').focus();}});
-$('#dataset-date').textContent=`Reviewed ${date(datasetMeta.reviewedAt)}`;
+$('#dataset-date').textContent=`Updated ${date(datasetMeta.reviewedAt)}`;
 $('#source-register').innerHTML=sources.map((source,index)=>`<a href="${source.url}" target="_blank" rel="noopener noreferrer"><span>${String(index+1).padStart(2,'0')} / ${safe(source.title)}<small>${safe(source.publisher)} · ${safe(source.type)} · ${date(source.asOf)}</small></span><span>↗</span></a>`).join('')+`<a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer"><span>Prices / CoinGecko<small>${prices.asOf?date(prices.asOf)+' · UTC':'Snapshot unavailable'}</small></span><span>↗</span></a>`;
 $('#export-csv').addEventListener('click',()=>{
-  const fields=['Country','ISO','Scope','Bitcoin BTC','Ethereum ETH','Selected valuation asset','Reported value USD','Share of dataset','Government snapshot date','Company snapshot dates','Price snapshot UTC','Sources'];
-  const lines=getRows().filter(row=>row.name.toLowerCase().includes(state.query.toLowerCase())||row.id.toLowerCase()===state.query.toLowerCase()).map(row=>[row.name,row.id,state.businesses?'government+selected businesses':'government',row.holdings.btc??'',row.holdings.eth??'',state.asset,row.value??'',row.share??'',row.government.btc!==null||row.government.eth!==null?row.asOf:'',state.businesses?row.businesses.map(b=>b.name+': '+b.asOf).join('; '):'',prices.asOf??'',row.sourceIds.map(id=>sourceById.get(id).url).join(' ')]);
+  const fields=['Country','ISO','Scope','Bitcoin BTC','Ethereum ETH','Selected valuation asset','Reported value USD','Share of dataset','Government snapshot date','Company snapshot dates','Price snapshot UTC','Government estimated assets','Sources'];
+  const lines=getRows().filter(row=>row.name.toLowerCase().includes(state.query.toLowerCase())||row.id.toLowerCase()===state.query.toLowerCase()).map(row=>[row.name,row.id,state.businesses?'government+selected businesses':'government',row.holdings.btc??'',row.holdings.eth??'',state.asset,row.value??'',row.share??'',row.government.btc!==null||row.government.eth!==null?row.asOf:'',state.businesses?row.businesses.map(b=>b.name+': '+b.asOf).join('; '):'',prices.asOf??'',(row.estimatedAssets||[]).join('; '),row.sourceIds.map(id=>sourceById.get(id).url).join(' ')]);
   const csv=[fields,...lines].map(row=>row.map(value=>'"'+String(value).replaceAll('"','""')+'"').join(',')).join('\r\n');
   const url=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));
-  const link=document.createElement('a');link.href=url;link.download=`reserve-atlas-${state.asset}-${state.businesses?'with-businesses':'government'}-${datasetMeta.reviewedAt}.csv`;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Snapshot exported with dates and source links.');
+  const link=document.createElement('a');link.href=url;link.download=`reserve-atlas-${state.asset}-${state.businesses?'with-businesses':'government'}-${datasetMeta.reviewedAt}.csv`;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('CSV exported');
 });
 const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}}),{threshold:.08});
 $$('.section-heading,.research-note').forEach(node=>{node.classList.add('reveal');observer.observe(node);});
 render();
-const initialCountry=params.get('country');
+const initialCountry=state.selected;
 if(initialCountry)openCountry(initialCountry);

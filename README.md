@@ -1,13 +1,13 @@
 # Reserve Atlas
 
-**The geography of digital wealth.** An independent, static atlas of publicly reported government and selected company Bitcoin and Ethereum holdings.
+**Bitcoin and Ethereum holdings, by country.** An independent, static atlas of publicly reported government and selected company Bitcoin and Ethereum holdings.
 
 Live site: **https://reserves.sebayaki.com/**
 
 ## Experience
 
 - Natural Earth world map with country markers, hover reports and keyboard navigation.
-- Government / selected businesses toggle recalculates balances, valuations, ranks and dataset shares together.
+- Businesses are included by default; the switch recalculates balances, valuations, ranks and dataset shares together.
 - All-assets, BTC and ETH valuation lenses; table sorting and country search.
 - Country reports with entity-level balances, disclosure dates and source links.
 - Shareable country/filter URLs and dated CSV exports.
@@ -36,9 +36,18 @@ GitHub Actions runs validation on pushes and pull requests. GitHub Pages publish
 
 ## Data boundaries
 
-This first release covers **9 countries and selected entities**, not a comprehensive world ranking. Government observations range from 2025 to October 2026. Disclosure dates are visible in each country report. Some state amounts are third-party tracker estimates; seized assets can be held in custody and are not necessarily owned as strategic reserves. Companies are assigned by operating headquarters; state-owned Bhutan assets are counted once. ETFs, exchange customer balances and private citizens are excluded.
+This audited snapshot covers **17 countries and territories and 20 selected companies**, not a comprehensive world ranking. Government and corporate balance dates vary from 2025 to October 2026. One listed company, Nexon, has no verified current unit count and is excluded from totals. Disclosure dates are visible in each country report. Some state amounts are third-party tracker estimates; seized assets can be held in custody and are not necessarily owned as strategic reserves. Companies are assigned by operating headquarters; state-owned Bhutan assets are counted once. ETFs, exchange customer balances and private citizens are excluded.
 
 Government and company source observations are manually reviewed. **Holdings are not live or automatically refreshed.** Price snapshots can be refreshed with the command above, then rebuilt and committed. A failed upstream quote leaves the previous snapshot intact. The interface labels the quote date separately from holdings dates and never fills an unknown balance with zero. Rankings, shares and totals describe only the selected disclosed dataset.
+
+## October 2026 audit
+
+- Dunamu (Upbit): consolidated own-account **16,587 BTC / 12,329 ETH** at June 30, 2026 from DART Note 13(2). Client custody in Note 13(3), and standalone parent figures already included in the group, are excluded.
+- Nexon: attributed to its Japanese parent headquarters. The 2026 filing confirms a bitcoin investment but provides no unit count. The **2021 purchase of 1,717 BTC is historical and excluded**.
+- Strategy, Bitmine, MARA and Metaplanet were crosschecked against SEC/issuer disclosures.
+- Government wallet attribution and rounded issuer amounts carry **≈**; affected totals inherit the mark.
+- BTCS includes **51,226 direct ETH** and excludes 3,615 ETH of indirect liquidity-pool exposure. Owned pledged/lent/staked assets are identified in entity notes.
+- Bithumb, Phoenix and BitFuFu candidates remain excluded where primary evidence or ownership details were insufficient. Full research decisions are in `research/asia-audit.json` and `research/global-audit.json`.
 
 ## Credits
 
