@@ -14,6 +14,12 @@ Live site: **https://reserves.sebayaki.com/**
 - Shareable country/filter URLs and dated CSV exports.
 - Self-hosted typography, responsive layouts and reduced-motion support.
 
+## Design principles
+
+Every visible element should identify the product, explain the data or enable an action. Avoid decorative glyphs without a clear purpose. The globe identifies the atlas; orange highlights values and active controls; bubble area encodes USD value.
+
+Keep the wordmark and globe optically aligned, retain readable quantities and USD subvalues, and give primary touch controls at least 44px targets. Check narrow mobile layouts as well as the bounded desktop layout before publishing visual changes.
+
 ## Local development
 
 Requires Node.js 22.12+ or 24+.
